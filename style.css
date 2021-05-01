@@ -10,15 +10,37 @@ header {
 
 main {
   margin-top: 15px;
+  /* unchecked: #4c0d09   checked: #ed1c50 */
 }
 
-main #actionBar {
-  width: 30%;
-  max-width: 500px;
+main #actionBar, main #inventory {
+  width: 35%;
+  max-width: 530px;
+  border: 1px solid black;
+  padding: 3px 10px 3px 10px;
 }
 
-main #actionBar p {
+main #actionBar p, main #inventory p {
   margin-bottom: 0;
+  margin-top: 0;
+}
+
+main #inventory {
+  margin-top: 15px;
+}
+
+main #gameBoard {
+  margin-top: 10px;
+  width: 35%;
+  min-width: 300px;
+  max-width: 530px;
+}
+
+main #gameBoard .row .gameGrid {
+  height: 50px;
+  width: 50px;
+  background-color: #4c0d09;
+  margin: 3px;
 }
 
 footer {

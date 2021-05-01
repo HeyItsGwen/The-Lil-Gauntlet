@@ -7,30 +7,69 @@
   <title>Lil' Gauntlet</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel='stylesheet' href='style.css'>
-  <script type='text/javascript' src='logic.js'></script>
 </head>
 <body>
   <header class='d-flex flex-column align-items-center font-weight-bold'>
     <!-- title -->
-    <h1>The Lil' Gauntlet</h1>
+    <h1 id='testH'>The Lil' Gauntlet</h1>
     <!-- maybe instructions -->
   </header>
 
   <main class='d-flex flex-column align-items-center'>
     <!-- bar that changes based on what's being moused over, showing action executed on click -->
-    <div id='actionBar' class='d-flex flex-column align-items-center'>
-      <p class='align-self-start'>Actions</p>
+    <div id='actionBar' class='d-flex flex-column'>
       <div id='actionBox' class='d-flex'>
-        <p>......................</p>
+        <p id='actionP'>—</p>
+        <!-- option section for actions in the current room -->
       </div>
     </div>
     <!-- game board square -->
-    <div id='gameBoard' class='d-flex justify-content-center'>
-
+    <div id='gameBoard' class='d-flex flex-column align-items-center'>
+      <div class='row'>
+        <div class='gameGrid col grid1'></div>
+        <div class='gameGrid col grid2'></div>
+        <div class='gameGrid col grid3'></div>
+        <div class='gameGrid col grid4'></div>
+        <div class='gameGrid col grid5'></div>
+      </div>
+      <div class='row'>
+        <div class='gameGrid col grid6'></div>
+        <div class='gameGrid col grid7'></div>
+        <div class='gameGrid col grid8'></div>
+        <div class='gameGrid col grid9'></div>
+        <div class='gameGrid col grid10'></div>
+      </div>
+      <div class='row'>
+        <div class='gameGrid col grid11'></div>
+        <div class='gameGrid col grid12'></div>
+        <div class='gameGrid col grid13' id='home'></div>
+        <div class='gameGrid col grid14'></div>
+        <div class='gameGrid col grid15'></div>
+      </div>
+      <div class='row'>
+        <div class='gameGrid col grid16'></div>
+        <div class='gameGrid col grid17'></div>
+        <div class='gameGrid col grid18'></div>
+        <div class='gameGrid col grid19'></div>
+        <div class='gameGrid col grid20'></div>
+      </div>
+      <div class='row'>
+        <div class='gameGrid col grid21'></div>
+        <div class='gameGrid col grid22'></div>
+        <div class='gameGrid col grid23'></div>
+        <div class='gameGrid col grid24'></div>
+        <div class='gameGrid col grid25'></div>
+      </div>
+      <div class='row'>
+        <div class='gameGrid col bossRoom' id='boss'></div>
+      </div>
     </div>
     <!-- inventory -->
-    <div id='inventory' class='d-flex justify-content-center'>
-
+    <div id='inventory' class='d-flex flex-column align-items-end'>
+      <p>Inventory</p>
+      <div id='actionBox' class='d-flex'>
+        <p>—</p>
+      </div>
     </div>
   </main>
 
@@ -38,6 +77,7 @@
     <p>Made with <i class="far fa-heart"></i>, <i class="fas fa-coffee"></i>, and <a class='bootstrap' href='https://getbootstrap.com/'><i class="fab fa-bootstrap"></i></a> by <a class='gwen' href='https://github.com/HeyItsGwen'>Gwen.</a></p>
   </footer>
 
+  <script type='text/javascript' src='./logic.js'></script>
   <script src="https://kit.fontawesome.com/6dd68a2491.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
