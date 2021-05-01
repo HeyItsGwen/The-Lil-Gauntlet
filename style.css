@@ -1,1 +1,36 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+body {
+  background-color: #181818;
+  color: #dddddd;
+}
+
+header {
+  color: #9a1f11;
+  margin-top: 10px;
+}
+
+main {
+  margin-top: 15px;
+}
+
+main #actionBar {
+  width: 30%;
+  max-width: 500px;
+}
+
+main #actionBar p {
+  margin-bottom: 0;
+}
+
+footer {
+  margin-top: 25px;
+  font-size: 0.7em;
+}
+
+footer .bootstrap {
+  color: #640e64;
+}
+
+footer .gwen {
+  color: #ffc8d2;
+}
+/*# sourceMappingURL=style.css.map */
