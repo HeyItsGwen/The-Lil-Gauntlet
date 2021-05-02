@@ -32,13 +32,10 @@ let roomType = room.classList[room.classList.length-1];
 let actionText = document.getElementById('actionP');
 
 //grid elements
-let home = document.getElementById('home');
+let home = document.querySelector('.home');
 
 //#endregion
 
-
-//FUNCTIONS
-//#region
 
 //function that changes the text in the action box
 function changeActionText(text) {
@@ -46,28 +43,7 @@ function changeActionText(text) {
     actionText.innerHTML=text;
 }
 
-//walk function grid
-let gameGrid = [[],
-                [],
-                [],
-                [],
-                []];
-
-function walkHere(grid) {
-    console.log('walking to '+grid);
-    //5 arrays for 5 rows of rooms
-    //get current location and requested location
-    //get # of squares left or right (compare array locations)
-    //get # of square up or down (compare which array)
-    //random chance to move left or right first or up or down first
-    //move rooms along the path until you get there
-}
-
-//#endregion
-
-//EVENT LISTENERS
-//#region 
-
+//query selectors to give all grid squares their proper mouseover text
 document.querySelectorAll('.gameGrid').forEach(grid=>{
     grid.addEventListener('mouseenter', e => {
         grid.classList[grid.classList.length-1]!='grid13'?changeActionText('Walk Here'):'';
@@ -77,10 +53,26 @@ document.querySelectorAll('.gameGrid').forEach(grid=>{
     grid.addEventListener('mouseleave', e => {changeActionText('—')});
 });
 
-//#endregion
+//walk function grid
 
+let playerLocation=[3,3];
+
+function walkHere(row,gridLocation) {
+    console.log('walking to row ' + row + ", grid " + gridLocation);
+    playerLocation=[row,gridLocation];
+    //5 arrays for 5 rows of rooms
+    //get current location and requested location
+    //get # of squares left or right (compare array locations)
+    //get # of square up or down (compare which array)
+    //move rooms along the path every maybe 2 ticks until you get there
+}
 
 //TICK LOOP
-//#region 
+//#region
+
+let ticks = setInterval(()=>{
+    //check if player is on the home tile
+    playerLocation[0]=='3'&&playerLocation[1]=='3'?home.style.backgroundImage='url(./images/HomePlayer.png)':home.style.backgroundImage='url(./images/HomeTile.png)';
+},600)
 
 //#endregion
