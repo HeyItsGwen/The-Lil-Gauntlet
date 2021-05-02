@@ -87,7 +87,10 @@ function walkHere() {
             }
         };
         //move one square every tick
-        
+        //check if need to move left/right or up/down
+        //if both, randomly choose which to do
+        //if one or the other, do one or the other, then
+        //change current location array to the new one tile different location
     }    
 }
 
