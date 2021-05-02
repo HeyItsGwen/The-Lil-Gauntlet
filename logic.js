@@ -69,10 +69,13 @@ function walkHere(grid) {
 //#region 
 
 document.querySelectorAll('.gameGrid').forEach(grid=>{
-    grid.addEventListener('mouseenter', e => {changeActionText('Walk Here')});
+    grid.addEventListener('mouseenter', e => {
+        grid.classList[grid.classList.length-1]!='grid13'?changeActionText('Walk Here'):'';
+        grid.classList[grid.classList.length-1]=='grid13'?changeActionText('Walk Home'):'';
+        grid.classList[grid.classList.length-1]=='bossRoom'?changeActionText('Fight the hunllef?'):'';
+    });
     grid.addEventListener('mouseleave', e => {changeActionText('—')});
-    grid.addEventListener('click', e => {walkHere(grid.classList[grid.classList.length-1])});
-})
+});
 
 //#endregion
 

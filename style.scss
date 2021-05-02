@@ -23,6 +23,21 @@ main {
     }
   }
 
+  #gameBoard {
+    .gameGrid {
+      background: url(./images/UncheckedTile.png);
+      background-size: 50px 50px;
+    }
+    .home {
+      background-image: url(./images/HomeTile.png);
+      background-size: 50px 50px;
+    }
+    #boss {
+      background-image: url(./images/BossTile.png);
+      background-size: 50px 50px;
+    }
+  }
+
   #inventory {
     margin-top: 15px;
   }

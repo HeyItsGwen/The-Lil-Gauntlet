@@ -25,6 +25,21 @@ main #actionBar p, main #inventory p {
   margin-top: 0;
 }
 
+main #gameBoard .gameGrid {
+  background: url(./images/UncheckedTile.png);
+  background-size: 50px 50px;
+}
+
+main #gameBoard .home {
+  background-image: url(./images/HomeTile.png);
+  background-size: 50px 50px;
+}
+
+main #gameBoard #boss {
+  background-image: url(./images/BossTile.png);
+  background-size: 50px 50px;
+}
+
 main #inventory {
   margin-top: 15px;
 }
