@@ -56,21 +56,48 @@ document.querySelectorAll('.gameGrid').forEach(grid=>{
 //walk function grid
 
 let playerLocation=[3,3];
+let requestedLocation=[];
 
-function walkHere(row,gridLocation) {
-    console.log('walking to row ' + row + ", grid " + gridLocation);
-    playerLocation=[row,gridLocation];
-    //5 arrays for 5 rows of rooms
-    //get current location and requested location
-    //get # of squares left or right (compare array locations)
-    //get # of square up or down (compare which array)
-    //move rooms along the path every maybe 2 ticks until you get there
+function walkHere() {
+    //find out if you still need to move
+    if(playerLocation[0]!=requestedLocation[0] || playerLocation[1]!=requestedLocation[1]){
+        //get current location (variable set) and requested (variable)
+        //get # of squares left or right
+        let horizontalDiff = math.abs(playerLocation[0],row);
+        //get direction
+        let horizontalDirection = function(a,b){
+            if(a>b) {
+                return 'left';
+            } else if (a<b){
+                return 'right';
+            } else {
+                return '';
+            }
+        };
+        //get # of square up or down
+        let verticalDiff = math.abs(playerLocation[1],col);
+        //get direction
+        let verticalDirection = function(a,b){
+            if(a>b) {
+                return 'down';
+            } else if (a<b){
+                return 'up';
+            } else {
+                return '';
+            }
+        };
+        //move one square every tick
+        
+    }    
 }
 
 //TICK LOOP
 //#region
 
 let ticks = setInterval(()=>{
+    //run move function every tick, the function checks if it needs to run or not
+    walkHere();
+
     //check if player is on the home tile
     playerLocation[0]=='3'&&playerLocation[1]=='3'?home.style.backgroundImage='url(./images/HomePlayer.png)':home.style.backgroundImage='url(./images/HomeTile.png)';
 },600)
