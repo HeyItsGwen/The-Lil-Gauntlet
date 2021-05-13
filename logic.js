@@ -36,14 +36,19 @@ let roomType = room.classList[room.classList.length-1];
 //grid random generation
 //24 tiles total
 let bossTiles = [];//only 4 possible, 1 for each demiboss and a dupe one
+let demibosses = [];
 let resourceTiles = [];//13 possible, includes rats, scorpions, and armor stuff
 let fishTiles = [];//6 possible
 
 //array of all available un-generated/used tiles
-let availableTiles = ['grid11','grid21','grid31','grid41','grid51','grid12','grid22','grid32','grid42','grid52','grid13','grid23','grid33','grid43','grid53','grid14','grid24','grid34','grid44','grid54','grid15','grid25','grid35','grid45','grid55'];
+let insideTiles = ['grid22','grid32','grid42','grid23','grid43','grid24','grid34','grid44'];
+//outside ring
+let outsideTiles = ['grid11','grid21','grid31','grid41','grid51','grid12','grid52','grid13','grid53','grid14','grid54','grid15','grid25','grid35','grid45','grid55'];
 
 window.onload = function() {
-
+    //loop 4 times to make boss tiles
+    //loop 13 times for resources
+    //loop 6 times for fishies
 }
 
 //function that changes the text in the action box
