@@ -60,6 +60,9 @@ let playerLocation=[3,3];
 //default requested location to be checked against in the walkHere function below
 let requestedLocation=[3,3];
 
+//array of visited tiles to change visuals on the page once a player has crossed a tile
+let visitedTiles=[[3,3]]
+
 function walkHere(row,col) {
     //set requested location to where the player clicked
     requestedLocation=[row,col];
@@ -111,6 +114,25 @@ function walkHere(row,col) {
     }
 };
 
+//functions to swap d-flex and d-none
+function show (classname) {
+    classSwap = document.querySelector(`.${classname}`);
+
+    if (classSwap.classList.contains('d-none')) {
+        classSwap.classList.remove('d-none');
+        classSwap.classList.add('d-flex');
+    }
+}
+
+function hide (classname) {
+    classSwap = document.querySelector(`.${classname}`);
+
+    if (classSwap.classList.contains('d-flex')) {
+        classSwap.classList.remove('d-flex');
+        classSwap.classList.add('d-none');
+    }
+}
+
 //TICK LOOP
 //#region
 
@@ -119,7 +141,7 @@ let ticks = setInterval(()=>{
     walkHere(requestedLocation[0],requestedLocation[1]);
 
     //check if player is on the home tile
-    playerLocation[0]=='3'&&playerLocation[1]=='3'?home.style.backgroundImage='url(./images/HomePlayer.png)':home.style.backgroundImage='url(./images/HomeTile.png)';
+    playerLocation[0]=='3'&&playerLocation[1]=='3'?show('homePlayer'):hide('homePlayer');
 },600)
 
 //#endregion

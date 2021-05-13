@@ -30,6 +30,11 @@ main #gameBoard .gameGrid {
   background-size: 50px 50px;
 }
 
+main #gameBoard .gameGrid img {
+  height: 100%;
+  margin-left: -15px;
+}
+
 main #gameBoard .home {
   background-image: url(./images/HomeTile.png);
   background-size: 50px 50px;

@@ -27,6 +27,11 @@ main {
     .gameGrid {
       background: url(./images/UncheckedTile.png);
       background-size: 50px 50px;
+
+      img {
+        height: 100%;
+        margin-left: -15px;
+      }
     }
     .home {
       background-image: url(./images/HomeTile.png);
