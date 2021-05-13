@@ -114,7 +114,8 @@ function walkHere(row,col) {
     }
 };
 
-//functions to swap d-flex and d-none
+//functions to swap d-flex and d-none to show/hide things on the board
+//args are input as string i.e. show('DOMclass') hide('DOMclass')
 function show (classname) {
     classSwap = document.querySelector(`.${classname}`);
 
@@ -123,7 +124,6 @@ function show (classname) {
         classSwap.classList.add('d-flex');
     }
 }
-
 function hide (classname) {
     classSwap = document.querySelector(`.${classname}`);
 
@@ -140,8 +140,8 @@ let ticks = setInterval(()=>{
     //run move function every tick, the function checks if it needs to run or not
     walkHere(requestedLocation[0],requestedLocation[1]);
 
-    //check if player is on the home tile
-    playerLocation[0]=='3'&&playerLocation[1]=='3'?show('homePlayer'):hide('homePlayer');
+    //check what tile player is on and show/hide the player icon
+    playerLocation[0]=='3'&&playerLocation[1]=='3'?show(`grid${playerLocation[0]}-${playerLocation[1]}`):hide('grid3-3');
 },600)
 
 //#endregion
