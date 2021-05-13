@@ -61,7 +61,7 @@ let playerLocation=[3,3];
 let requestedLocation=[3,3];
 
 //array of visited tiles to change visuals on the page once a player has crossed a tile
-let visitedTiles=[[3,3]]
+let visitedTiles=['.grid33']
 
 function walkHere(row,col) {
     //set requested location to where the player clicked
@@ -86,17 +86,23 @@ function hide (classname) {
         classSwap.classList.add('d-none');
     }
 }
-//correlate playerlocation to grid player img format (grid#-#)
-function playerImgLocation(){
+//return a playerLocation [3,3] as my grid class image format grid3-3
+function playerLocationClassImg(){
     let a = playerLocation[0];
     let b = playerLocation[1];
     return(`grid${a}-${b}`);
+}
+//return a playerLocation [3.3] as my grind class tile format grid33
+function playerLocationClassTile(){
+    let a = playerLocation[0];
+    let b = playerLocation[1];
+    return(`.grid${a}${b}`);
 }
 //get and hide all tiles player isn't on
 function hideNotLocated(){
     let tiles = document.querySelectorAll('.playerImg');
     tiles.forEach(tile => {
-    if(!tile.classList.contains(playerImgLocation)){
+    if(!tile.classList.contains(playerLocationClassImg)){
         console.log(tile.classList[tile.classList.length-1]);
     }
 })
@@ -111,6 +117,7 @@ let ticks = setInterval(()=>{
     //find out if you still need to move (if requestedLocation is different to playerLocation)
     //then do the moving
     if(playerLocation[0]!=requestedLocation[0] || playerLocation[1]!=requestedLocation[1]){
+        //reveal the tile the player is on if it hasn't been revealed
         //get current location (variable set) and requested (variable)
         //get # of squares left or right
         let horizontalDiff = Math.abs(playerLocation[0]-requestedLocation[0]);
@@ -139,7 +146,7 @@ let ticks = setInterval(()=>{
 
         console.log('horizontal move: ' + horizontalDiff + ' ' + horizontalDirection + ' vertical move: ' + verticalDiff + ' ' + verticalDirection);
 
-        hide(playerImgLocation());
+        hide(playerLocationClassImg());
     
         if (horizontalDiff != 0) { //if need to move horizontally
             //change playerLocation to one closer horizontally (i.e. [1,1] to [2,1])
@@ -156,8 +163,18 @@ let ticks = setInterval(()=>{
                 playerLocation[1] = playerLocation[1]+1;
             }
         }
+        //tile revealing logic
+        if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
+            visitedTiles.push(playerLocationClassTile(playerLocation));
+            //check boss array to see if tile should be a boss tile
+            //check fish array to see if tile should be fish
+            //check armour resource array to see if tile should be armour resource
+            //etc.
 
-        show(playerImgLocation());
+            //this is just for testing
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/blankVisited.png)';
+        }
+        show(playerLocationClassImg());
     }
 },600)
 
