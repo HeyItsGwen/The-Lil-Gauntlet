@@ -95,10 +95,18 @@ function walkHere(row,col) {
     
         if (horizontalDiff != 0) { //if need to move horizontally
             //change playerLocation to one closer horizontally (i.e. [1,1] to [2,1])
-            console.log('moving horizontally');
-        } else if (horizontalDiff == 0 && verticalDiff != 0) { //if we don't need to move horizontally, but do need to move vertically
+            if (horizontalDirection == 'left'){
+                playerLocation[0] = playerLocation[0]-1; //move one left
+            } else if (horizontalDirection == 'right'){
+                playerLocation[0] = playerLocation[0]+1; //move one right
+            }
+        } else if (verticalDiff != 0) { //if we don't need to move horizontally, but do need to move vertically
             //change playerLocation to one closer vertically (i.e. [1,1] to [1,2]
-            console.log('moving vertically')
+            if (verticalDirection == 'up'){
+                playerLocation[1] = playerLocation[1]-1;
+            } else if(verticalDirection == 'down'){
+                playerLocation[1] = playerLocation[1]+1;
+            }
         }
     }
 };
