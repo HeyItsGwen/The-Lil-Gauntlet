@@ -1,5 +1,14 @@
+//DOM ELEMENTS
+//#region
+
+let actionText = document.getElementById('actionP');
+
+//grid elements
+let home = document.querySelector('.home');
+
+//#endregion
+
 //LOGIC PLAN
-//#region 
 /*
 
 when generating the game, add classes to the grid squares that say what's in them
@@ -22,20 +31,20 @@ LOGIC FOR FINDING WHAT ACTIONS TO DO IN A ROOM
 let roomType = room.classList[room.classList.length-1];
 --> returns 'fish' or 'dragon' or 'miningAndFluff' etc.
 
-
 */
-//#endregion
 
-//DOM ELEMENTS
-//#region
+//grid random generation
+//24 tiles total
+let bossTiles = [];//only 4 possible, 1 for each demiboss and a dupe one
+let resourceTiles = [];//13 possible, includes rats, scorpions, and armor stuff
+let fishTiles = [];//6 possible
 
-let actionText = document.getElementById('actionP');
+//array of all available un-generated/used tiles
+let availableTiles = ['grid11','grid21','grid31','grid41','grid51','grid12','grid22','grid32','grid42','grid52','grid13','grid23','grid33','grid43','grid53','grid14','grid24','grid34','grid44','grid54','grid15','grid25','grid35','grid45','grid55'];
 
-//grid elements
-let home = document.querySelector('.home');
+window.onload = function() {
 
-//#endregion
-
+}
 
 //function that changes the text in the action box
 function changeActionText(text) {
@@ -163,7 +172,7 @@ let ticks = setInterval(()=>{
                 playerLocation[1] = playerLocation[1]+1;
             }
         }
-        //tile revealing logic
+        //tile revealing and action changing logic
         if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
             visitedTiles.push(playerLocationClassTile(playerLocation));
             //check boss array to see if tile should be a boss tile
