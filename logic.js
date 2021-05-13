@@ -55,51 +55,60 @@ document.querySelectorAll('.gameGrid').forEach(grid=>{
 
 //walk function grid
 
+//default home location of the player
 let playerLocation=[3,3];
-let requestedLocation=[];
+//default requested location to be checked against in the walkHere function below
+let requestedLocation=[3,3];
 
-function walkHere() {
-    //find out if you still need to move
+function walkHere(row,col) {
+    //set requested location to where the player clicked
+    requestedLocation=[row,col];
+    //find out if you still need to move (if requestedLocation is different to playerLocation)
     if(playerLocation[0]!=requestedLocation[0] || playerLocation[1]!=requestedLocation[1]){
         //get current location (variable set) and requested (variable)
         //get # of squares left or right
-        let horizontalDiff = math.abs(playerLocation[0],row);
+        let horizontalDiff = Math.abs(playerLocation[0]-row);
         //get direction
-        let horizontalDirection = function(a,b){
-            if(a>b) {
-                return 'left';
-            } else if (a<b){
-                return 'right';
-            } else {
-                return '';
-            }
-        };
+        let horizontalDirection = 'stay'; //default to 'stay'
+        //if current row is less than requested, move right, if greater, move left
+        if(playerLocation[0] < requestedLocation[0]) {
+            horizontalDirection = 'right';
+        } else if (playerLocation[0] > requestedLocation[0]){
+            horizontalDirection = 'left';
+        } else { //otherwise stay still
+            horizontalDirection = 'stay';
+        }
         //get # of square up or down
-        let verticalDiff = math.abs(playerLocation[1],col);
+        let verticalDiff = Math.abs(playerLocation[1]-col);
         //get direction
-        let verticalDirection = function(a,b){
-            if(a>b) {
-                return 'down';
-            } else if (a<b){
-                return 'up';
-            } else {
-                return '';
-            }
-        };
-        //move one square every tick
-        //check if need to move left/right or up/down
-        //if both, randomly choose which to do
-        //if one or the other, do one or the other, then
-        //change current location array to the new one tile different location
-    }    
-}
+        let verticalDirection = 'stay';
+        //if current col is less than requested,
+        if(playerLocation[1] < requestedLocation[1]) {
+            verticalDirection = 'down';
+        } else if (playerLocation[1] > requestedLocation[1]){
+            verticalDirection = 'up';
+        } else {
+            verticalDirection = 'stay';
+        }
+
+        console.log('horizontal move: ' + horizontalDiff + ' ' + horizontalDirection + ' vertical move: ' + verticalDiff + ' ' + verticalDirection);
+    
+        if (horizontalDiff != 0) { //if need to move horizontally
+            //change playerLocation to one closer horizontally (i.e. [1,1] to [2,1])
+            console.log('moving horizontally');
+        } else if (horizontalDiff == 0 && verticalDiff != 0) { //if we don't need to move horizontally, but do need to move vertically
+            //change playerLocation to one closer vertically (i.e. [1,1] to [1,2]
+            console.log('moving vertically')
+        }
+    }
+};
 
 //TICK LOOP
 //#region
 
 let ticks = setInterval(()=>{
     //run move function every tick, the function checks if it needs to run or not
-    walkHere();
+    walkHere(requestedLocation[0],requestedLocation[1]);
 
     //check if player is on the home tile
     playerLocation[0]=='3'&&playerLocation[1]=='3'?home.style.backgroundImage='url(./images/HomePlayer.png)':home.style.backgroundImage='url(./images/HomeTile.png)';
