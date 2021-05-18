@@ -41,7 +41,7 @@ main #gameBoard .home {
 }
 
 main #gameBoard #boss {
-  background-image: url(./images/BossTile.png);
+  background-image: url(./images/bossTile.png);
   background-size: 50px 50px;
 }
 

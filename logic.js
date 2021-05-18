@@ -1,44 +1,16 @@
 //DOM ELEMENTS
-//#region
-
 let actionText = document.getElementById('actionP');
 
-//grid elements
-let home = document.querySelector('.home');
-
-//#endregion
-
-//LOGIC PLAN
-/*
-
-when generating the game, add classes to the grid squares that say what's in them
-the last class in the classList array will be the type of room that grid square is
-
-LOGIC FOR ROOM GENERATION
-variables that store the number of x item that has to be in the game
-let neededOre=3
-let neededFluff=3
-let neededDragons=2
-etc.
-do a foreach through an array containing each grid square
-check what's needed, add it to x room, fill empty ones with rats or whatever.
-let BOSSES = [] (possible boss rooms to randomize through and add)
-let RESOURCES = [] (possible resource rooms to randomize through and add)
-let RATS = [] (rat rooms)
-let SCORPIONS = [] (you get the idea)
-
-LOGIC FOR FINDING WHAT ACTIONS TO DO IN A ROOM
-let roomType = room.classList[room.classList.length-1];
---> returns 'fish' or 'dragon' or 'miningAndFluff' etc.
-
-*/
 
 //grid random generation
 //24 tiles total
-let bossTiles = [];//only 4 possible, 1 for each demiboss and a dupe one
-let demibosses = [];
-let resourceTiles = [];//13 possible, includes rats, scorpions, and armor stuff
-let fishTiles = [];//6 possible
+let bosses = ['dragon','dark-beast','bear'];
+let bossTiles = [];//only 3 possible, 1 for each demiboss and a dupe one
+
+let resources = ['rats','scorpions','fluff','fluff','rats','scorpions','tree','fluff','tree','herbs','rock','tree','rock','rock','herbs','herbs'];
+let resourceTiles = [];//16 possible, includes rats, scorpions, and armor stuff
+
+let fishTiles = [];//5 possible
 
 //array of all available un-generated/used tiles
 let insideTiles = ['grid22','grid32','grid42','grid23','grid43','grid24','grid34','grid44'];
@@ -46,9 +18,53 @@ let insideTiles = ['grid22','grid32','grid42','grid23','grid43','grid24','grid34
 let outsideTiles = ['grid11','grid21','grid31','grid41','grid51','grid12','grid52','grid13','grid53','grid14','grid54','grid15','grid25','grid35','grid45','grid55'];
 
 window.onload = function() {
+    actionText.innerHTML='—';
     //loop 4 times to make boss tiles
-    //loop 13 times for resources
-    //loop 6 times for fishies
+    for(i=0; i<3; i++){
+        //pick a random location from outside tiles
+        let randomGrid=Math.floor(Math.random()*outsideTiles.length);
+        //add it to the boss tile array
+        bossTiles.push(outsideTiles[randomGrid]);
+        //remove it from outside tiles
+        outsideTiles.splice(randomGrid,1);
+    }
+    //loop through the boss array and add the specified boss class to the grid tiles
+    for(i in bossTiles){
+        document.querySelector(`.${bossTiles[i]}`).classList.add(bosses[i]);
+    }
+    console.log(bossTiles);
+
+    //loop 14 times for resources
+    for(i=0; i<16; i++){
+        if(i%2==0 && i!=0){
+            let randomGrid=Math.floor(Math.random()*insideTiles.length);
+            resourceTiles.push(insideTiles[randomGrid]);
+            insideTiles.splice(randomGrid,1);
+        } else {
+            let randomGrid=Math.floor(Math.random()*outsideTiles.length);
+            resourceTiles.push(outsideTiles[randomGrid]);
+            outsideTiles.splice(randomGrid,1);
+        }
+    }
+    //loop through the resource array and add the specified resource class to the grid tiles
+    for(i in resourceTiles){
+        document.querySelector(`.${resourceTiles[i]}`).classList.add(resources[i]);
+    }
+
+    //add rest of tiles to fishies
+    for(i in insideTiles){
+        fishTiles.push(insideTiles[i]);
+    }
+    for(i in outsideTiles){
+        fishTiles.push(outsideTiles[i]);
+    }
+    //loop through the fish array and add the fish class to the grid tiles
+    for(i in fishTiles){
+        document.querySelector(`.${fishTiles[i]}`).classList.add('fish');
+    }
+
+    //maybe just add a class to the dom element and check that when revealing a tile?
+    //that's probably easier tbf
 }
 
 //function that changes the text in the action box
@@ -106,7 +122,7 @@ function playerLocationClassImg(){
     let b = playerLocation[1];
     return(`grid${a}-${b}`);
 }
-//return a playerLocation [3.3] as my grind class tile format grid33
+//return a playerLocation [3.3] as my grid class tile format grid33
 function playerLocationClassTile(){
     let a = playerLocation[0];
     let b = playerLocation[1];
@@ -180,13 +196,29 @@ let ticks = setInterval(()=>{
         //tile revealing and action changing logic
         if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
             visitedTiles.push(playerLocationClassTile(playerLocation));
-            //check boss array to see if tile should be a boss tile
-            //check fish array to see if tile should be fish
-            //check armour resource array to see if tile should be armour resource
-            //etc.
-
-            //this is just for testing
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/blankVisited.png)';
+            //check current tile query selector classList for bosses, resources, etc.
+            //change background to that
+            if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dark-beast')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
+            }
         }
         show(playerLocationClassImg());
     }
