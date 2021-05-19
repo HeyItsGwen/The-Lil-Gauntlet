@@ -1,6 +1,13 @@
 //DOM ELEMENTS
 let actionText = document.getElementById('actionP');
-
+let actionOption = document.getElementById('actionOption');
+//inventory elements
+let invFish = document.getElementById('invFish');
+let invHerbs = document.getElementById('invHerbs');
+let invBark = document.getElementById('invBark');
+let invOre = document.getElementById('invOre');
+let invFluff = document.getElementById('invFluff');
+let invFrames = document.getElementById('invFrames');
 
 //grid random generation
 //24 tiles total
@@ -8,7 +15,7 @@ let actionText = document.getElementById('actionP');
 let bosses = ['dragon','dark-beast','bear'];
 let bossTiles = [];//only 3 possible, 1 for each demiboss and a dupe one
 
-let resources = ['rats','scorpions','fluff','fluff','rats','scorpions','tree','fluff','tree','herbs','rock','tree','rock','rock','herbs','herbs'];
+let resources = ['rats','rats','fluff','fluff','rats','scorpions','tree','fluff','tree','herbs','rock','tree','rock','rock','herbs','herbs'];
 let resourceTiles = [];//16 possible, includes rats, scorpions, and armor stuff
 
 let fishTiles = [];//5 possible
@@ -17,6 +24,8 @@ let fishTiles = [];//5 possible
 let insideTiles = ['grid22','grid32','grid42','grid23','grid43','grid24','grid34','grid44'];
 //outside ring
 let outsideTiles = ['grid11','grid21','grid31','grid41','grid51','grid12','grid52','grid13','grid53','grid14','grid54','grid15','grid25','grid35','grid45','grid55'];
+//array of empty tiles to be added to
+let emptyTiles = [];
 
 window.onload = function() {
     actionText.innerHTML='—';
@@ -76,14 +85,18 @@ function changeActionText(text) {
     //arg is the text that appears
     actionText.innerHTML=text;
 }
+function changeActionOption(text) {
+    actionOption.innerHTML=text;
+}
 
-let currentActionText="—";
+let currentActionText="Home";
+let currentActionOption="—";
 
 //query selectors to give all grid squares their proper mouseover text
 document.querySelectorAll('.gameGrid').forEach(grid=>{
     grid.addEventListener('mouseover', e => {
-        grid.classList[grid.classList.length-1]!='grid33'?changeActionText('Walk Here'):'';
-        grid.classList[grid.classList.length-1]=='grid33'?changeActionText('Walk Home'):'';
+        grid.classList[grid.classList.length-1]!='grid33'?changeActionText('Walk here'):'';
+        grid.classList[grid.classList.length-1]=='grid33'?changeActionText('Walk home'):'';
         grid.classList[grid.classList.length-1]=='bossRoom'?changeActionText('Fight the hunllef?'):'';
     });
     grid.addEventListener('mouseout', e => {changeActionText(currentActionText)});
@@ -135,7 +148,22 @@ function playerLocationClassTile(){
     return(`.grid${a}${b}`);
 }
 
-//Action Text Logic
+//inventory variables
+let fish = 0;
+let herbs = 0;
+let fluff = 0;
+let ore = 0;
+let bark = 0;
+let frame = 0;
+let bow = 0; //basic
+let bowstring = 0;
+let bow2 = 0; //upgraded
+let staff = 0;
+let orb = 0;
+let staff2 = 0;
+let halberd = 0;
+let spike = 0;
+let halberd2 = 0;
 
 //TICK LOOP
 //#region
@@ -227,40 +255,136 @@ let ticks = setInterval(()=>{
     }
     
     //change action text/player options based on current tile
-    let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList;
-
+    let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList; //gets classlist for the name of the boss
     if (playerLocationClassTile()!=lastTickTile){
-        if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-            currentActionText='Use the fishing spot?';
+        if (document.querySelector(playerLocationClassTile()).classList.contains('empty')){
+            currentActionText='Empty';
+            changeActionText(currentActionText);
+            currentActionOption='—';
+            changeActionOption(currentActionOption);
+        } else if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+            currentActionText='Resource: Fish';
             //change action text
             changeActionText(currentActionText);
+            currentActionOption='Fish the Fish';
+            changeActionOption(currentActionOption);
+            //handle the option being clicked
         } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
-            currentActionText=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
+            currentActionText=`Demiboss: ${currentTileClasslist[currentTileClasslist.length-2]}!`;
             changeActionText(currentActionText);
+            currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
+            changeActionOption(currentActionOption);
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-            currentActionText='Pick the herbs?';
+            currentActionText='Resource: Herbs';
             changeActionText(currentActionText);
+            currentActionOption='Pick the herbs';
+            changeActionOption(currentActionOption);
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-            currentActionText='Pick the Fluff?';
+            currentActionText='Resource: Fluff';
             changeActionText(currentActionText);
+            currentActionOption='Pick the fluff';
+            changeActionOption(currentActionOption);
+            //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-            currentActionText='Chop the tree?';
+            currentActionText='Resource: Tree';
             changeActionText(currentActionText);
+            currentActionOption='Chop the tree';
+            changeActionOption(currentActionOption);
+            //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-            currentActionText='Harvest the ore?';
+            currentActionText='Resource: Ores';
             changeActionText(currentActionText);
+            currentActionOption='Mine the ore';
+            changeActionOption(currentActionOption);
+            //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-            currentActionText='Fight the rat!';
+            currentActionText='Enemy: Rat';
             changeActionText(currentActionText);
+            currentActionOption='Fight the Rat';
+            changeActionOption(currentActionOption);
+            //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-            currentActionText='Fight the scorpion!'
+            currentActionText='Enemy: Scorpion'
             changeActionText(currentActionText);
+            currentActionOption='Fight the Scorpion';
+            changeActionOption(currentActionOption);
+            //handle the option being clicked
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
+            currentActionText='Home';
+            changeActionText(currentActionText);
+            //check if have fish to cook, or armor or weapons to make, and give options accordingly
+            //otherwise make it blank
+            currentActionOption='—';
+            changeActionOption(currentActionOption);
         }
         lastTickTile=playerLocationClassTile();
     }
 
+    actionOption.addEventListener('click',e=>{
+        if(!emptyTiles.includes(playerLocationClassTile())){
+            document.querySelector(playerLocationClassTile()).classList.add('empty');
+            if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+                fish+=4;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invFish.innerHTML=`raw fish: ${fish}`;
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+                herbs++;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invHerbs.innerHTML=`herbs: ${herbs}`;
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+                fluff++;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invFluff.innerHTML=`fluff: ${fluff}`
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+                bark++;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invBark.innerHTML=`bark: ${bark}`;
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+                ore++;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invOre.innerHTML=`ore: ${ore}`;
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+                frame++;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invFrames.innerHTML=`weapon frames: ${frame}`;
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+                Math.floor(Math.random()*4)===0?frame++:"";
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                invFrames.innerHTML=`weapon frames: ${frame}`;
+            }
+        }
+    });
+
     document.querySelectorAll('.empty').forEach(empty => {
-        empty.style.backgroundImage='url(./images/blankVisited.png)'
+        empty.style.backgroundImage='url(./images/blankVisited.png)';
     })
 },600)
 

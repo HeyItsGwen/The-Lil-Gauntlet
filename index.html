@@ -18,9 +18,10 @@
   <main class='d-flex flex-column align-items-center'>
     <!-- bar that changes based on what's being moused over, showing action executed on click -->
     <div id='actionBar' class='d-flex flex-column'>
-      <div id='actionBox' class='d-flex'>
+      <div id='actionBox' class='d-flex flex-column'>
         <p id='actionP'>Loading...</p>
         <!-- option section for actions in the current room -->
+        <a href='#' id='actionOption' class='align-self-center'>—</a>
       </div>
     </div>
     <!-- game board square -->
@@ -94,7 +95,12 @@
     <div id='inventory' class='d-flex flex-column align-items-end'>
       <p>Inventory</p>
       <div id='actionBox' class='d-flex'>
-        <p>—</p>
+        <p id='invFish'>raw fish: 0</p>
+        <p id='invHerbs'>herbs: 0</p>
+        <p id='invBark'>bark: 0</p>
+        <p id='invOre'>ore: 0</p>
+        <p id='invFluff'>fluff: 0</p>
+        <p id='invFrames'>weapon frames: 0</p>
       </div>
     </div>
   </main>

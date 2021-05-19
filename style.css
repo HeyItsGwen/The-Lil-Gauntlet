@@ -25,6 +25,14 @@ main #actionBar p, main #inventory p {
   margin-top: 0;
 }
 
+main #actionBar #actionBox #actionOption, main #inventory #actionBox #actionOption {
+  color: red;
+}
+
+main #actionBar #actionBox #actionOption::hover, main #inventory #actionBox #actionOption::hover {
+  cursor: pointer;
+}
+
 main #gameBoard .gameGrid {
   background: url(./images/UncheckedTile.png);
   background-size: 50px 50px;
