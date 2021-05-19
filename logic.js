@@ -194,35 +194,38 @@ let ticks = setInterval(()=>{
                 playerLocation[1] = playerLocation[1]+1;
             }
         }
+
+        //tile revealing and action changing logic
+        if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
+            visitedTiles.push(playerLocationClassTile(playerLocation));
+            //check current tile query selector classList for bosses, resources, etc.
+            //change background to that
+            if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dark-beast')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
+            }
+        }
+
         show(playerLocationClassImg());
     }
-    //tile revealing and action changing logic
-    if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
-        visitedTiles.push(playerLocationClassTile(playerLocation));
-        //check current tile query selector classList for bosses, resources, etc.
-        //change background to that
-        if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
-        } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
-        } else if(document.querySelector(playerLocationClassTile()).classList.contains('dark-beast')){
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
-        } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
-        }
-    }
+    
     //change action text/player options based on current tile
     let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList;
 
