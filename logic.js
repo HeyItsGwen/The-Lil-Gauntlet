@@ -4,6 +4,7 @@ let actionText = document.getElementById('actionP');
 
 //grid random generation
 //24 tiles total
+//#region 
 let bosses = ['dragon','dark-beast','bear'];
 let bossTiles = [];//only 3 possible, 1 for each demiboss and a dupe one
 
@@ -30,9 +31,11 @@ window.onload = function() {
     }
     //loop through the boss array and add the specified boss class to the grid tiles
     for(i in bossTiles){
+        //add the specific demiboss name
         document.querySelector(`.${bossTiles[i]}`).classList.add(bosses[i]);
+        //add generic "boss" class
+        document.querySelector(`.${bossTiles[i]}`).classList.add('demiboss');
     }
-    console.log(bossTiles);
 
     //loop 14 times for resources
     for(i=0; i<16; i++){
@@ -66,6 +69,7 @@ window.onload = function() {
     //maybe just add a class to the dom element and check that when revealing a tile?
     //that's probably easier tbf
 }
+//#endregion
 
 //function that changes the text in the action box
 function changeActionText(text) {
@@ -73,14 +77,16 @@ function changeActionText(text) {
     actionText.innerHTML=text;
 }
 
+let currentActionText="—";
+
 //query selectors to give all grid squares their proper mouseover text
 document.querySelectorAll('.gameGrid').forEach(grid=>{
-    grid.addEventListener('mouseenter', e => {
-        grid.classList[grid.classList.length-1]!='grid13'?changeActionText('Walk Here'):'';
-        grid.classList[grid.classList.length-1]=='grid13'?changeActionText('Walk Home'):'';
+    grid.addEventListener('mouseover', e => {
+        grid.classList[grid.classList.length-1]!='grid33'?changeActionText('Walk Here'):'';
+        grid.classList[grid.classList.length-1]=='grid33'?changeActionText('Walk Home'):'';
         grid.classList[grid.classList.length-1]=='bossRoom'?changeActionText('Fight the hunllef?'):'';
     });
-    grid.addEventListener('mouseleave', e => {changeActionText('—')});
+    grid.addEventListener('mouseout', e => {changeActionText(currentActionText)});
 });
 
 //walk function grid
@@ -128,18 +134,13 @@ function playerLocationClassTile(){
     let b = playerLocation[1];
     return(`.grid${a}${b}`);
 }
-//get and hide all tiles player isn't on
-function hideNotLocated(){
-    let tiles = document.querySelectorAll('.playerImg');
-    tiles.forEach(tile => {
-    if(!tile.classList.contains(playerLocationClassImg)){
-        console.log(tile.classList[tile.classList.length-1]);
-    }
-})
-}
+
+//Action Text Logic
 
 //TICK LOOP
 //#region
+
+let lastTickTile = '.grid33';
 
 let ticks = setInterval(()=>{
     //run move function every tick, the function checks if it needs to run or not
@@ -193,35 +194,71 @@ let ticks = setInterval(()=>{
                 playerLocation[1] = playerLocation[1]+1;
             }
         }
-        //tile revealing and action changing logic
-        if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
-            visitedTiles.push(playerLocationClassTile(playerLocation));
-            //check current tile query selector classList for bosses, resources, etc.
-            //change background to that
-            if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dark-beast')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
-            }
-        }
         show(playerLocationClassImg());
     }
+    //tile revealing and action changing logic
+    if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
+        visitedTiles.push(playerLocationClassTile(playerLocation));
+        //check current tile query selector classList for bosses, resources, etc.
+        //change background to that
+        if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
+        } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
+        } else if(document.querySelector(playerLocationClassTile()).classList.contains('dark-beast')){
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
+        } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+            document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
+        }
+    }
+    //change action text/player options based on current tile
+    let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList;
+
+    if (playerLocationClassTile()!=lastTickTile){
+        if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+            currentActionText='Use the fishing spot?';
+            //change action text
+            changeActionText(currentActionText);
+        } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
+            currentActionText=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
+            changeActionText(currentActionText);
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+            currentActionText='Pick the herbs?';
+            changeActionText(currentActionText);
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+            currentActionText='Pick the Fluff?';
+            changeActionText(currentActionText);
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+            currentActionText='Chop the tree?';
+            changeActionText(currentActionText);
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+            currentActionText='Harvest the ore?';
+            changeActionText(currentActionText);
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+            currentActionText='Fight the rat!';
+            changeActionText(currentActionText);
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+            currentActionText='Fight the scorpion!'
+            changeActionText(currentActionText);
+        }
+        lastTickTile=playerLocationClassTile();
+    }
+
+    document.querySelectorAll('.empty').forEach(empty => {
+        empty.style.backgroundImage='url(./images/blankVisited.png)'
+    })
 },600)
 
 //#endregion
