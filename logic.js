@@ -312,16 +312,21 @@ let ticks = setInterval(()=>{
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
             currentActionText='Home';
             changeActionText(currentActionText);
+
             //check if have fish to cook, or armor or weapons to make, and give options accordingly
             //otherwise make it blank
-            currentActionOption='—';
-            changeActionOption(currentActionOption);
+            if(fish>0){
+                
+            } else {
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+            }
         }
         lastTickTile=playerLocationClassTile();
     }
 
     actionOption.addEventListener('click',e=>{
-        if(!emptyTiles.includes(playerLocationClassTile())){
+        if(!emptyTiles.includes(playerLocationClassTile())&&!document.querySelector(playerLocationClassTile()).classList.contains('home')){
             document.querySelector(playerLocationClassTile()).classList.add('empty');
             if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
                 fish+=4;
@@ -380,6 +385,8 @@ let ticks = setInterval(()=>{
                 changeActionOption(currentActionOption);
                 invFrames.innerHTML=`weapon frames: ${frame}`;
             }
+        } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
+            console.log('im home');
         }
     });
 
