@@ -380,38 +380,41 @@ let ticks = setInterval(()=>{
             currentActionOption='Fight the Scorpion';
             changeActionOption(currentActionOption);
             //handle the option being clicked
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
-            currentActionText='Home';
-            changeActionText(currentActionText);
-            //check if have fish to cook, or armor or weapons to make, and give options accordingly
-            //otherwise make it blank
-            if(fish>0){
-                //hide the away actions
-                hide('awayAction');
-                document.querySelector('.fishAction').innerHTML=`Cook your Fish (${fish} ticks)`;
-                //show the correct 'crafting' link
-                show('fishAction');
-                document.querySelector('.fishAction').addEventListener('click',e=>{
-                    cookFish();
-                });
-            }
-            if(herbs>0) {
-                hide('awayAction');
-                document.querySelector('.potionAction').innerHTML=`Make Potions (${herbs*2} ticks)`
-                show('potionAction')
-                document.querySelector('.potionAction').addEventListener('click',e=>{
-                    makePotions();
-                    ticksUsed+=1;
-                });
-            }
-            if (fish==0 && herbs==0) {
-                show('awayAction');
-                currentActionOption='—';
-                changeActionOption(currentActionOption);
-                ticksUsed+=1;
-            }
-        }
+        } 
+
         lastTickTile=playerLocationClassTile();
+    }
+
+    if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
+        currentActionText='Home';
+        changeActionText(currentActionText);
+        //check if have fish to cook, or armor or weapons to make, and give options accordingly
+        //otherwise make it blank
+        if(fish>0){
+            //hide the away actions
+            hide('awayAction');
+            document.querySelector('.fishAction').innerHTML=`Cook your Fish (${fish} ticks)`;
+            //show the correct 'crafting' link
+            show('fishAction');
+            document.querySelector('.fishAction').addEventListener('click',e=>{
+                cookFish();
+            });
+        }
+        if(herbs>0) {
+            hide('awayAction');
+            document.querySelector('.potionAction').innerHTML=`Make Potions (${herbs*2} ticks)`
+            show('potionAction')
+            document.querySelector('.potionAction').addEventListener('click',e=>{
+                makePotions();
+                ticksUsed+=1;
+            });
+        }
+        if (fish==0 && herbs==0) {
+            show('awayAction');
+            currentActionOption='—';
+            changeActionOption(currentActionOption);
+            ticksUsed+=1;
+        }
     }
 
     actionOption.addEventListener('click',e=>{
@@ -519,8 +522,6 @@ let ticks = setInterval(()=>{
     halberd===0?hide('halberdInv'):show('halberdInv');
     !spike?hide('spikesInv'):show('spikesInv');
     halberd2===0?hide('halberd2Inv'):show('halberd2Inv');
-
-    console.log(ticksUsed);
 
 },600)
 
