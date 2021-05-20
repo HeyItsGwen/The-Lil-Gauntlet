@@ -3,7 +3,9 @@ let actionText = document.getElementById('actionP');
 let actionOption = document.getElementById('actionOption');
 //inventory elements
 let invFish = document.getElementById('invFish');
+let invCookedFish = document.getElementById('invCookedFish');
 let invHerbs = document.getElementById('invHerbs');
+let invPotions = document.getElementById('invPotions');
 let invBark = document.getElementById('invBark');
 let invOre = document.getElementById('invOre');
 let invFluff = document.getElementById('invFluff');
@@ -157,9 +159,14 @@ function playerLocationClassTile(){
     return(`.grid${a}${b}`);
 }
 
+//player variables
+let ticksUsed = 0;
+
 //inventory variables
 let fish = 0;
+let cookedFish = 0;
 let herbs = 0;
+let potions = 0;
 let fluff = 0;
 let ore = 0;
 let bark = 0;
@@ -173,6 +180,23 @@ let staff2 = 0;
 let halberd = 0;
 let spike = false;
 let halberd2 = 0;
+
+//inventory/crafting functions
+let cookFish = () => {
+    ticksUsed += fish;
+    cookedFish += fish;
+    fish = 0;
+    invCookedFish.innerHTML=`cooked fish: ${cookedFish}`;
+    hide('fishAction');
+}
+
+let makePotions = () => {
+    ticksUsed += herbs*2;
+    potions += herbs;
+    herbs = 0;
+    invPotions.innerHTML=`potions: ${potions}`;
+    hide('potionAction');
+}
 
 //TICK LOOP
 //#region
@@ -266,12 +290,22 @@ let ticks = setInterval(()=>{
     //change action text/player options based on current tile
     let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList; //gets classlist for the name of the boss
     if (playerLocationClassTile()!=lastTickTile){
+        //add a tick for moving
+        ticksUsed+=1;
         if (document.querySelector(playerLocationClassTile()).classList.contains('empty')){
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Empty';
             changeActionText(currentActionText);
             currentActionOption='—';
             changeActionOption(currentActionOption);
         } else if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Resource: Fish';
             //change action text
             changeActionText(currentActionText);
@@ -279,40 +313,68 @@ let ticks = setInterval(()=>{
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText=`Demiboss: ${currentTileClasslist[currentTileClasslist.length-2]}!`;
             changeActionText(currentActionText);
             currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
             changeActionOption(currentActionOption);
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Resource: Herbs';
             changeActionText(currentActionText);
             currentActionOption='Pick the herbs';
             changeActionOption(currentActionOption);
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Resource: Fluff';
             changeActionText(currentActionText);
             currentActionOption='Pick the fluff';
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Resource: Tree';
             changeActionText(currentActionText);
             currentActionOption='Chop the tree';
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Resource: Ores';
             changeActionText(currentActionText);
             currentActionOption='Mine the ore';
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Enemy: Rat';
             changeActionText(currentActionText);
             currentActionOption='Fight the Rat';
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+            //make sure the extra links for crafting at home are hidden
+            hide('homeAction');
+            //and show the appropriate actions
+            show('awayAction');
             currentActionText='Enemy: Scorpion'
             changeActionText(currentActionText);
             currentActionOption='Fight the Scorpion';
@@ -321,14 +383,32 @@ let ticks = setInterval(()=>{
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
             currentActionText='Home';
             changeActionText(currentActionText);
-
             //check if have fish to cook, or armor or weapons to make, and give options accordingly
             //otherwise make it blank
             if(fish>0){
-                
-            } else {
+                //hide the away actions
+                hide('awayAction');
+                document.querySelector('.fishAction').innerHTML=`Cook your Fish (${fish} ticks)`;
+                //show the correct 'crafting' link
+                show('fishAction');
+                document.querySelector('.fishAction').addEventListener('click',e=>{
+                    cookFish();
+                });
+            }
+            if(herbs>0) {
+                hide('awayAction');
+                document.querySelector('.potionAction').innerHTML=`Make Potions (${herbs*2} ticks)`
+                show('potionAction')
+                document.querySelector('.potionAction').addEventListener('click',e=>{
+                    makePotions();
+                    ticksUsed+=1;
+                });
+            }
+            if (fish==0 && herbs==0) {
+                show('awayAction');
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
+                ticksUsed+=1;
             }
         }
         lastTickTile=playerLocationClassTile();
@@ -415,8 +495,6 @@ let ticks = setInterval(()=>{
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
             }
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
-            console.log('im home');
         }
     });
 
@@ -425,7 +503,9 @@ let ticks = setInterval(()=>{
     })
 
     fish===0?hide('fishInv'):show('fishInv');
+    cookedFish===0?hide('cookedFishInv'):show('cookedFishInv');
     herbs===0?hide('herbInv'):show('herbInv');
+    potions===0?hide('potionsInv'):show('potionsInv');
     bark===0?hide('barkInv'):show('barkInv');
     ore===0?hide('oreInv'):show('oreInv');
     fluff===0?hide('fluffInv'):show('fluffInv');
@@ -439,6 +519,8 @@ let ticks = setInterval(()=>{
     halberd===0?hide('halberdInv'):show('halberdInv');
     !spike?hide('spikesInv'):show('spikesInv');
     halberd2===0?hide('halberd2Inv'):show('halberd2Inv');
+
+    console.log(ticksUsed);
 
 },600)
 

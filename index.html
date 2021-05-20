@@ -21,7 +21,9 @@
       <div id='actionBox' class='d-flex flex-column'>
         <p id='actionP'>Loading...</p>
         <!-- option section for actions in the current room -->
-        <a href='#' id='actionOption' class='align-self-center'>—</a>
+        <a href='#' id='actionOption' class='align-self-center actionLink d-none awayAction'>—</a>
+        <a href='#' class='align-self-center actionLink d-none homeAction fishAction'></a>
+        <a href='#' class='align-self-center actionLink d-none homeAction potionAction'></a>
       </div>
     </div>
     
@@ -97,7 +99,9 @@
       <p>Inventory</p>
       <div id='inventoryBox' class='d-flex'>
         <p id='invFish' class='d-none fishInv'>raw fish: 0</p>
+        <p id='invCookedFish' class='d-none cookedFishInv'>cooked fish: 0</p>
         <p id='invHerbs' class='d-none herbInv'>herbs: 0</p>
+        <p id='invPotions' class='d-none potionsInv'>potions: 0</p>
         <p id='invBark' class='d-none barkInv'>bark: 0</p>
         <p id='invOre' class='d-none oreInv'>ore: 0</p>
         <p id='invFluff' class='d-none fluffInv'>fluff: 0</p>

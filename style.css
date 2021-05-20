@@ -25,11 +25,11 @@ main #actionBar p, main #inventory p {
   margin-top: 0;
 }
 
-main #actionBar #actionBox #actionOption, main #inventory #actionBox #actionOption {
+main #actionBar #actionBox .actionLink, main #inventory #actionBox .actionLink {
   color: red;
 }
 
-main #actionBar #actionBox #actionOption::hover, main #inventory #actionBox #actionOption::hover {
+main #actionBar #actionBox .actionLink::hover, main #inventory #actionBox .actionLink::hover {
   cursor: pointer;
 }
 
