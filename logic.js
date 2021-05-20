@@ -8,11 +8,20 @@ let invBark = document.getElementById('invBark');
 let invOre = document.getElementById('invOre');
 let invFluff = document.getElementById('invFluff');
 let invFrames = document.getElementById('invFrames');
+let invOrbs = document.getElementById('invOrbs');
+let invBowstring = document.getElementById('invBowstring');
+let invSpikes = document.getElementById('invSpikes');
+let invBow = document.getElementById('invBow');
+let invHalberd = document.getElementById('invHalberd');
+let invStaff = document.getElementById('invStaff');
+let invBow2 = document.getElementById('invBow2');
+let invHalberd2 = document.getElementById('invHalberd2');
+let invStaff2 = document.getElementById('invStaff2');
 
 //grid random generation
 //24 tiles total
 //#region 
-let bosses = ['dragon','dark-beast','bear'];
+let bosses = ['dragon','darkbeast','bear'];
 let bossTiles = [];//only 3 possible, 1 for each demiboss and a dupe one
 
 let resources = ['rats','rats','fluff','fluff','rats','scorpions','tree','fluff','tree','herbs','rock','tree','rock','rock','herbs','herbs'];
@@ -156,13 +165,13 @@ let ore = 0;
 let bark = 0;
 let frame = 0;
 let bow = 0; //basic
-let bowstring = 0;
+let bowstring = false;
 let bow2 = 0; //upgraded
 let staff = 0;
-let orb = 0;
+let orb = false;
 let staff2 = 0;
 let halberd = 0;
-let spike = 0;
+let spike = false;
 let halberd2 = 0;
 
 //TICK LOOP
@@ -232,7 +241,7 @@ let ticks = setInterval(()=>{
                 document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
             } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
                 document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dark-beast')){
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')){
                 document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
             } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
                 document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
@@ -384,6 +393,27 @@ let ticks = setInterval(()=>{
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
                 invFrames.innerHTML=`weapon frames: ${frame}`;
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('dragon')) {
+                orb=true;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')) {
+                bowstring=true;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('bear')) {
+                spike=true;
+                emptyTiles.push(playerLocationClassTile());
+                currentActionText='Empty';
+                changeActionText(currentActionText);
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
             }
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
             console.log('im home');
@@ -393,6 +423,23 @@ let ticks = setInterval(()=>{
     document.querySelectorAll('.empty').forEach(empty => {
         empty.style.backgroundImage='url(./images/blankVisited.png)';
     })
+
+    fish===0?hide('fishInv'):show('fishInv');
+    herbs===0?hide('herbInv'):show('herbInv');
+    bark===0?hide('barkInv'):show('barkInv');
+    ore===0?hide('oreInv'):show('oreInv');
+    fluff===0?hide('fluffInv'):show('fluffInv');
+    frame===0?hide('framesInv'):show('framesInv');
+    bow===0?hide('bowInv'):show('bowInv');
+    !bowstring?hide('bowstringInv'):show('bowstringInv');
+    bow2===0?hide('bow2Inv'):show('bow2Inv');
+    staff===0?hide('staffInv'):show('staffInv');
+    !orb?hide('orbsInv'):show('orbsInv');
+    staff2===0?hide('staff2Inv'):show('staff2Inv');
+    halberd===0?hide('halberdInv'):show('halberdInv');
+    !spike?hide('spikesInv'):show('spikesInv');
+    halberd2===0?hide('halberd2Inv'):show('halberd2Inv');
+
 },600)
 
 //#endregion

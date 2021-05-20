@@ -71,6 +71,11 @@ main #gameBoard .row .gameGrid {
   margin: 3px;
 }
 
+#inventoryBox p i {
+  position: relative;
+  top: 6px;
+}
+
 footer {
   margin-top: 25px;
   font-size: 0.7em;
