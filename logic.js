@@ -1,4 +1,5 @@
 //DOM ELEMENTS
+//#region
 let actionText = document.getElementById('actionP');
 let actionOption = document.getElementById('actionOption');
 //inventory elements
@@ -19,6 +20,7 @@ let invStaff = document.getElementById('invStaff');
 let invBow2 = document.getElementById('invBow2');
 let invHalberd2 = document.getElementById('invHalberd2');
 let invStaff2 = document.getElementById('invStaff2');
+//#endregion
 
 //grid random generation
 //24 tiles total
@@ -26,7 +28,7 @@ let invStaff2 = document.getElementById('invStaff2');
 let bosses = ['dragon','darkbeast','bear'];
 let bossTiles = [];//only 3 possible, 1 for each demiboss and a dupe one
 
-let resources = ['rats','rats','fluff','fluff','rats','scorpions','tree','fluff','tree','herbs','rock','tree','rock','rock','herbs','herbs'];
+let resources = ['rats','scorpions','fluff','fluff','rats','scorpions','tree','fluff','tree','herbs','rock','tree','rock','rock','herbs','herbs'];
 let resourceTiles = [];//16 possible, includes rats, scorpions, and armor stuff
 
 let fishTiles = [];//5 possible
@@ -171,15 +173,15 @@ let fluff = 0;
 let ore = 0;
 let bark = 0;
 let frame = 0;
-let bow = 0; //basic
+let bow = false; //basic
 let bowstring = false;
-let bow2 = 0; //upgraded
-let staff = 0;
+let bow2 = false; //upgraded
+let staff = false;
 let orb = false;
-let staff2 = 0;
-let halberd = 0;
+let staff2 = false;
+let halberd = false;
 let spike = false;
-let halberd2 = 0;
+let halberd2 = false;
 
 //inventory/crafting functions
 let cookFish = () => {
@@ -196,6 +198,50 @@ let makePotions = () => {
     herbs = 0;
     invPotions.innerHTML=`potions: ${potions}`;
     hide('potionAction');
+}
+
+let makeBasicWeapon = weapon => {
+    ticks+=3;
+    //function takes a text string as an arg to determine what weapon to make
+    if(weapon==='bow'){
+        bow=true;
+        hide('bowLink');
+    } else if (weapon==='halberd') {
+        halberd=true;
+        hide('halberdLink');
+    } else if (weapon==='staff') {
+        staff=true;
+        hide('staffLink');
+    }
+    frame-=1;
+    if(frame===0){
+        hide('bowLink');
+        hide('halberdLink');
+        hide('staffLink');
+    } else{
+        invFrames.innerHTML=`weapons frames: ${frame}`;
+    }
+}
+
+let makePerfectWeapon = weapon => {
+    ticks +=3;
+    if(weapon==='bow'){
+        bowstring=false;
+        bow=false;
+        bow2=true;
+        hide('perfectBowLink');
+    } else if (weapon==='halberd'){
+        spike=false;
+        halberd=false;
+        halberd2=true;
+        hide('perfectHalberdLink');
+    } else if (weapon==='staff'){
+        orb=false;
+        staff=false;
+        staff2=true;
+        hide('perfectStaffLink');
+    }
+    canMakePerfected=false;
 }
 
 //TICK LOOP
@@ -293,8 +339,6 @@ let ticks = setInterval(()=>{
         //add a tick for moving
         ticksUsed+=1;
         if (document.querySelector(playerLocationClassTile()).classList.contains('empty')){
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Empty';
@@ -302,8 +346,6 @@ let ticks = setInterval(()=>{
             currentActionOption='—';
             changeActionOption(currentActionOption);
         } else if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Resource: Fish';
@@ -313,8 +355,6 @@ let ticks = setInterval(()=>{
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText=`Demiboss: ${currentTileClasslist[currentTileClasslist.length-2]}!`;
@@ -322,8 +362,6 @@ let ticks = setInterval(()=>{
             currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
             changeActionOption(currentActionOption);
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Resource: Herbs';
@@ -331,8 +369,6 @@ let ticks = setInterval(()=>{
             currentActionOption='Pick the herbs';
             changeActionOption(currentActionOption);
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Resource: Fluff';
@@ -341,8 +377,6 @@ let ticks = setInterval(()=>{
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Resource: Tree';
@@ -351,8 +385,6 @@ let ticks = setInterval(()=>{
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Resource: Ores';
@@ -361,8 +393,6 @@ let ticks = setInterval(()=>{
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Enemy: Rat';
@@ -371,8 +401,6 @@ let ticks = setInterval(()=>{
             changeActionOption(currentActionOption);
             //handle the option being clicked
         } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-            //make sure the extra links for crafting at home are hidden
-            hide('homeAction');
             //and show the appropriate actions
             show('awayAction');
             currentActionText='Enemy: Scorpion'
@@ -390,6 +418,7 @@ let ticks = setInterval(()=>{
         changeActionText(currentActionText);
         //check if have fish to cook, or armor or weapons to make, and give options accordingly
         //otherwise make it blank
+        let canMakePerfected = false;
         if(fish>0){
             //hide the away actions
             hide('awayAction');
@@ -400,6 +429,48 @@ let ticks = setInterval(()=>{
                 cookFish();
             });
         }
+        if(frame!=0){
+            hide('awayAction');
+            //check if player already has a weapon, if not show the link
+            !bow?show('bowLink'):'';
+            $('.bowLink').unbind().click(()=>{
+                makeBasicWeapon('bow');
+            });
+            !staff?show('staffLink'):'';
+            $('.staffLink').unbind().click(()=>{
+                makeBasicWeapon('staff');
+            });
+            !halberd?show('halberdLink'):'';
+            $('.halberdLink').unbind().click(()=>{
+                makeBasicWeapon('halberd');
+            });
+            //if player has a frame but has all 3 weapons, don't show any link and show awayAction
+            bow&&staff&&halberd?show('awayAction'):'';
+        }
+        if(bow&&bowstring){
+            canMakePerfected=true;
+            hide('awayAction');
+            show('perfectBowLink');
+            $('.perfectBowLink').unbind().click(()=>{
+                makePerfectWeapon('bow');
+            });
+        }
+        if(staff&&orb){
+            canMakePerfected=true;
+            hide('awayAction');
+            show('perfectStaffLink');
+            $('.perfectStaffLink').unbind().click(()=>{
+                makePerfectWeapon('staff');
+            });
+        }
+        if(halberd&&spike){
+            canMakePerfected=true;
+            hide('awayAction');
+            show('perfectHalberdLink');
+            $('.perfectHalberdLink').unbind().click(()=>{
+                makePerfectWeapon('halberd');
+            });
+        }
         if(herbs>0) {
             hide('awayAction');
             document.querySelector('.potionAction').innerHTML=`Make Potions (${herbs*2} ticks)`
@@ -408,13 +479,21 @@ let ticks = setInterval(()=>{
                 makePotions();
                 ticksUsed+=1;
             });
-        }
-        if (fish==0 && herbs==0) {
+        } 
+        if(fish===0&&frame===0&&herbs===0&&!canMakePerfected) {
             show('awayAction');
             currentActionOption='—';
             changeActionOption(currentActionOption);
             ticksUsed+=1;
         }
+    } else {
+        hide('bowLink');
+        hide('staffLink');
+        hide('halberdLink');
+        hide('perfectBowLink');
+        hide('perfectStaffLink');
+        hide('perfectHalberdLink');
+        hide('homeAction');
     }
 
     actionOption.addEventListener('click',e=>{
@@ -478,6 +557,8 @@ let ticks = setInterval(()=>{
                 invFrames.innerHTML=`weapon frames: ${frame}`;
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('dragon')) {
                 orb=true;
+                frame+=1;
+                document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
                 emptyTiles.push(playerLocationClassTile());
                 currentActionText='Empty';
                 changeActionText(currentActionText);
@@ -485,6 +566,8 @@ let ticks = setInterval(()=>{
                 changeActionOption(currentActionOption);
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')) {
                 bowstring=true;
+                frame+=1;
+                document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
                 emptyTiles.push(playerLocationClassTile());
                 currentActionText='Empty';
                 changeActionText(currentActionText);
@@ -492,6 +575,8 @@ let ticks = setInterval(()=>{
                 changeActionOption(currentActionOption);
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('bear')) {
                 spike=true;
+                frame+=1;
+                document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
                 emptyTiles.push(playerLocationClassTile());
                 currentActionText='Empty';
                 changeActionText(currentActionText);
@@ -505,6 +590,8 @@ let ticks = setInterval(()=>{
         empty.style.backgroundImage='url(./images/blankVisited.png)';
     })
 
+    //inventory item visibility management
+    //#region 
     fish===0?hide('fishInv'):show('fishInv');
     cookedFish===0?hide('cookedFishInv'):show('cookedFishInv');
     herbs===0?hide('herbInv'):show('herbInv');
@@ -513,15 +600,16 @@ let ticks = setInterval(()=>{
     ore===0?hide('oreInv'):show('oreInv');
     fluff===0?hide('fluffInv'):show('fluffInv');
     frame===0?hide('framesInv'):show('framesInv');
-    bow===0?hide('bowInv'):show('bowInv');
+    !bow?hide('bowInv'):show('bowInv');
     !bowstring?hide('bowstringInv'):show('bowstringInv');
-    bow2===0?hide('bow2Inv'):show('bow2Inv');
-    staff===0?hide('staffInv'):show('staffInv');
+    !bow2?hide('bow2Inv'):show('bow2Inv');
+    !staff?hide('staffInv'):show('staffInv');
     !orb?hide('orbsInv'):show('orbsInv');
-    staff2===0?hide('staff2Inv'):show('staff2Inv');
-    halberd===0?hide('halberdInv'):show('halberdInv');
+    !staff2?hide('staff2Inv'):show('staff2Inv');
+    !halberd?hide('halberdInv'):show('halberdInv');
     !spike?hide('spikesInv'):show('spikesInv');
-    halberd2===0?hide('halberd2Inv'):show('halberd2Inv');
+    !halberd2?hide('halberd2Inv'):show('halberd2Inv');
+    //#endregion
 
 },600)
 
