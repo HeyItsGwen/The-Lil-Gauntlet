@@ -282,8 +282,6 @@ let ticks = setInterval(()=>{
             verticalDirection = 'stay';
         }
 
-        console.log('horizontal move: ' + horizontalDiff + ' ' + horizontalDirection + ' vertical move: ' + verticalDiff + ' ' + verticalDirection);
-
         hide(playerLocationClassImg());
     
         if (horizontalDiff != 0) { //if need to move horizontally
