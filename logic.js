@@ -8,7 +8,7 @@ let lastClickedTick=0;
 document.addEventListener('mousedown',e=>{
     //add last tick user interacted with the page to a variable
     lastClickedTick=currentTick;
-    console.log('page clicked');
+    console.log('page clicked',currentTick);
 });
 ////#endregion
 
@@ -264,8 +264,9 @@ let makePerfectWeapon = weapon => {
 let lastTickTile = '.grid33';
 
 let ticks = setInterval(()=>{
+    currentTick+=1;
     //check how recently the user interacted with the page so the loop doesn't run forever
-    if(currentTick<=(lastClickedTick+150)) {
+    if((lastClickedTick+150)<=currentTick||lastClickedTick!==0) {
         //run move function every tick, the function checks if it needs to run or not
         walkHere(requestedLocation[0],requestedLocation[1]);
         //find out if you still need to move (if requestedLocation is different to playerLocation)
@@ -624,6 +625,8 @@ let ticks = setInterval(()=>{
         !spike?hide('spikesInv'):show('spikesInv');
         !halberd2?hide('halberd2Inv'):show('halberd2Inv');
         //#endregion
+    } else {
+        console.log('paused');
     }
 },600);
 
