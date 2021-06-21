@@ -1,3 +1,17 @@
+//THINGS TO STOP THE LOOP FROM RUNNING IN THE BACKGROUND!!!!
+//#region
+//get current game tick
+let currentTick=0;
+//set variable for last time user interacted with the page
+let lastClickedTick=0;
+//check for user interacting with the page
+document.addEventListener('mousedown',e=>{
+    //add last tick user interacted with the page to a variable
+    lastClickedTick=currentTick;
+    console.log('page clicked');
+});
+////#endregion
+
 //DOM ELEMENTS
 //#region
 let actionText = document.getElementById('actionP');
@@ -250,365 +264,367 @@ let makePerfectWeapon = weapon => {
 let lastTickTile = '.grid33';
 
 let ticks = setInterval(()=>{
-    //run move function every tick, the function checks if it needs to run or not
-    walkHere(requestedLocation[0],requestedLocation[1]);
-    //find out if you still need to move (if requestedLocation is different to playerLocation)
-    //then do the moving
-    if(playerLocation[0]!=requestedLocation[0] || playerLocation[1]!=requestedLocation[1]){
-        //reveal the tile the player is on if it hasn't been revealed
-        //get current location (variable set) and requested (variable)
-        //get # of squares left or right
-        let horizontalDiff = Math.abs(playerLocation[0]-requestedLocation[0]);
-        //get direction
-        let horizontalDirection = 'stay'; //default to 'stay'
-        //if current row is less than requested, move right, if greater, move left
-        if(playerLocation[0] < requestedLocation[0]) {
-            horizontalDirection = 'right';
-        } else if (playerLocation[0] > requestedLocation[0]){
-            horizontalDirection = 'left';
-        } else { //otherwise stay still
-            horizontalDirection = 'stay';
-        }
-        //get # of square up or down
-        let verticalDiff = Math.abs(playerLocation[1]-requestedLocation[1]);
-        //get direction
-        let verticalDirection = 'stay';
-        //if current col is less than requested,
-        if(playerLocation[1] < requestedLocation[1]) {
-            verticalDirection = 'down';
-        } else if (playerLocation[1] > requestedLocation[1]){
-            verticalDirection = 'up';
-        } else {
-            verticalDirection = 'stay';
-        }
-
-        hide(playerLocationClassImg());
-    
-        if (horizontalDiff != 0) { //if need to move horizontally
-            //change playerLocation to one closer horizontally (i.e. [1,1] to [2,1])
-            if (horizontalDirection == 'left'){
-                playerLocation[0] = playerLocation[0]-1; //move one left
-            } else if (horizontalDirection == 'right'){
-                playerLocation[0] = playerLocation[0]+1; //move one right
+    //check how recently the user interacted with the page so the loop doesn't run forever
+    if(currentTick<=(lastClickedTick+150)) {
+        //run move function every tick, the function checks if it needs to run or not
+        walkHere(requestedLocation[0],requestedLocation[1]);
+        //find out if you still need to move (if requestedLocation is different to playerLocation)
+        //then do the moving
+        if(playerLocation[0]!=requestedLocation[0] || playerLocation[1]!=requestedLocation[1]){
+            //reveal the tile the player is on if it hasn't been revealed
+            //get current location (variable set) and requested (variable)
+            //get # of squares left or right
+            let horizontalDiff = Math.abs(playerLocation[0]-requestedLocation[0]);
+            //get direction
+            let horizontalDirection = 'stay'; //default to 'stay'
+            //if current row is less than requested, move right, if greater, move left
+            if(playerLocation[0] < requestedLocation[0]) {
+                horizontalDirection = 'right';
+            } else if (playerLocation[0] > requestedLocation[0]){
+                horizontalDirection = 'left';
+            } else { //otherwise stay still
+                horizontalDirection = 'stay';
             }
-        } else if (verticalDiff != 0) { //if we don't need to move horizontally, but do need to move vertically
-            //change playerLocation to one closer vertically (i.e. [1,1] to [1,2]
-            if (verticalDirection == 'up'){
-                playerLocation[1] = playerLocation[1]-1;
-            } else if(verticalDirection == 'down'){
-                playerLocation[1] = playerLocation[1]+1;
+            //get # of square up or down
+            let verticalDiff = Math.abs(playerLocation[1]-requestedLocation[1]);
+            //get direction
+            let verticalDirection = 'stay';
+            //if current col is less than requested,
+            if(playerLocation[1] < requestedLocation[1]) {
+                verticalDirection = 'down';
+            } else if (playerLocation[1] > requestedLocation[1]){
+                verticalDirection = 'up';
+            } else {
+                verticalDirection = 'stay';
             }
-        }
 
-        //tile revealing and action changing logic
-        if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
-            visitedTiles.push(playerLocationClassTile(playerLocation));
-            //check current tile query selector classList for bosses, resources, etc.
-            //change background to that
-            if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
-            } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-                document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
+            hide(playerLocationClassImg());
+        
+            if (horizontalDiff != 0) { //if need to move horizontally
+                //change playerLocation to one closer horizontally (i.e. [1,1] to [2,1])
+                if (horizontalDirection == 'left'){
+                    playerLocation[0] = playerLocation[0]-1; //move one left
+                } else if (horizontalDirection == 'right'){
+                    playerLocation[0] = playerLocation[0]+1; //move one right
+                }
+            } else if (verticalDiff != 0) { //if we don't need to move horizontally, but do need to move vertically
+                //change playerLocation to one closer vertically (i.e. [1,1] to [1,2]
+                if (verticalDirection == 'up'){
+                    playerLocation[1] = playerLocation[1]-1;
+                } else if(verticalDirection == 'down'){
+                    playerLocation[1] = playerLocation[1]+1;
+                }
             }
-        }
 
-        show(playerLocationClassImg());
-    }
-    
-    //change action text/player options based on current tile
-    let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList; //gets classlist for the name of the boss
-    if (playerLocationClassTile()!=lastTickTile){
-        //add a tick for moving
-        ticksUsed+=1;
-        if (document.querySelector(playerLocationClassTile()).classList.contains('empty')){
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Empty';
-            changeActionText(currentActionText);
-            currentActionOption='—';
-            changeActionOption(currentActionOption);
-        } else if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Resource: Fish';
-            //change action text
-            changeActionText(currentActionText);
-            currentActionOption='Fish the Fish';
-            changeActionOption(currentActionOption);
-            //handle the option being clicked
-        } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText=`Demiboss: ${currentTileClasslist[currentTileClasslist.length-2]}!`;
-            changeActionText(currentActionText);
-            currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
-            changeActionOption(currentActionOption);
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Resource: Herbs';
-            changeActionText(currentActionText);
-            currentActionOption='Pick the herbs';
-            changeActionOption(currentActionOption);
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Resource: Fluff';
-            changeActionText(currentActionText);
-            currentActionOption='Pick the fluff';
-            changeActionOption(currentActionOption);
-            //handle the option being clicked
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Resource: Tree';
-            changeActionText(currentActionText);
-            currentActionOption='Chop the tree';
-            changeActionOption(currentActionOption);
-            //handle the option being clicked
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Resource: Ores';
-            changeActionText(currentActionText);
-            currentActionOption='Mine the ore';
-            changeActionOption(currentActionOption);
-            //handle the option being clicked
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Enemy: Rat';
-            changeActionText(currentActionText);
-            currentActionOption='Fight the Rat';
-            changeActionOption(currentActionOption);
-            //handle the option being clicked
-        } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-            //and show the appropriate actions
-            show('awayAction');
-            currentActionText='Enemy: Scorpion'
-            changeActionText(currentActionText);
-            currentActionOption='Fight the Scorpion';
-            changeActionOption(currentActionOption);
-            //handle the option being clicked
-        } 
+            //tile revealing and action changing logic
+            if(!visitedTiles.includes(playerLocationClassTile(playerLocation))){
+                visitedTiles.push(playerLocationClassTile(playerLocation));
+                //check current tile query selector classList for bosses, resources, etc.
+                //change background to that
+                if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fishVisited.png)';
+                } else if(document.querySelector(playerLocationClassTile()).classList.contains('dragon')){
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/dragonVisited.png)';
+                } else if(document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')){
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/darkbeastVisited.png)';
+                } else if(document.querySelector(playerLocationClassTile()).classList.contains('bear')){
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/bearVisited.png)';
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/herbVisited.png)';
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/fluffVisited.png)';
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/treeVisited.png)';
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/rocksVisited.png)';
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/ratsVisited.png)';
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+                    document.querySelector(playerLocationClassTile()).style.backgroundImage='url(./images/scorpionsVisited.png)';
+                }
+            }
 
-        lastTickTile=playerLocationClassTile();
-    }
-
-    if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
-        currentActionText='Home';
-        changeActionText(currentActionText);
-        //check if have fish to cook, or armor or weapons to make, and give options accordingly
-        //otherwise make it blank
-        let canMakePerfected = false;
-        if(fish>0){
-            //hide the away actions
-            hide('awayAction');
-            document.querySelector('.fishAction').innerHTML=`Cook your Fish (${fish} ticks)`;
-            //show the correct 'crafting' link
-            show('fishAction');
-            document.querySelector('.fishAction').addEventListener('click',e=>{
-                cookFish();
-            });
+            show(playerLocationClassImg());
         }
-        if(frame!=0){
-            hide('awayAction');
-            //check if player already has a weapon, if not show the link
-            !bow?show('bowLink'):'';
-            $('.bowLink').unbind().click(()=>{
-                makeBasicWeapon('bow');
-            });
-            !staff?show('staffLink'):'';
-            $('.staffLink').unbind().click(()=>{
-                makeBasicWeapon('staff');
-            });
-            !halberd?show('halberdLink'):'';
-            $('.halberdLink').unbind().click(()=>{
-                makeBasicWeapon('halberd');
-            });
-            //if player has a frame but has all 3 weapons, don't show any link and show awayAction
-            bow&&staff&&halberd?show('awayAction'):'';
-        }
-        if(bow&&bowstring){
-            canMakePerfected=true;
-            hide('awayAction');
-            show('perfectBowLink');
-            $('.perfectBowLink').unbind().click(()=>{
-                makePerfectWeapon('bow');
-            });
-        }
-        if(staff&&orb){
-            canMakePerfected=true;
-            hide('awayAction');
-            show('perfectStaffLink');
-            $('.perfectStaffLink').unbind().click(()=>{
-                makePerfectWeapon('staff');
-            });
-        }
-        if(halberd&&spike){
-            canMakePerfected=true;
-            hide('awayAction');
-            show('perfectHalberdLink');
-            $('.perfectHalberdLink').unbind().click(()=>{
-                makePerfectWeapon('halberd');
-            });
-        }
-        if(herbs>0) {
-            hide('awayAction');
-            document.querySelector('.potionAction').innerHTML=`Make Potions (${herbs*2} ticks)`
-            show('potionAction')
-            document.querySelector('.potionAction').addEventListener('click',e=>{
-                makePotions();
-                ticksUsed+=1;
-            });
-        } 
-        if(fish===0&&frame===0&&herbs===0&&!canMakePerfected) {
-            show('awayAction');
-            currentActionOption='—';
-            changeActionOption(currentActionOption);
+        
+        //change action text/player options based on current tile
+        let currentTileClasslist=document.querySelector(playerLocationClassTile()).classList; //gets classlist for the name of the boss
+        if (playerLocationClassTile()!=lastTickTile){
+            //add a tick for moving
             ticksUsed+=1;
-        }
-    } else {
-        hide('bowLink');
-        hide('staffLink');
-        hide('halberdLink');
-        hide('perfectBowLink');
-        hide('perfectStaffLink');
-        hide('perfectHalberdLink');
-        hide('homeAction');
-    }
-
-    actionOption.addEventListener('click',e=>{
-        if(!emptyTiles.includes(playerLocationClassTile())&&!document.querySelector(playerLocationClassTile()).classList.contains('home')){
-            document.querySelector(playerLocationClassTile()).classList.add('empty');
-            if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
-                fish+=4;
-                emptyTiles.push(playerLocationClassTile());
+            if (document.querySelector(playerLocationClassTile()).classList.contains('empty')){
+                //and show the appropriate actions
+                show('awayAction');
                 currentActionText='Empty';
                 changeActionText(currentActionText);
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
-                invFish.innerHTML=`raw fish: ${fish}`;
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Resource: Fish';
+                //change action text
+                changeActionText(currentActionText);
+                currentActionOption='Fish the Fish';
+                changeActionOption(currentActionOption);
+                //handle the option being clicked
+            } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText=`Demiboss: ${currentTileClasslist[currentTileClasslist.length-2]}!`;
+                changeActionText(currentActionText);
+                currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
+                changeActionOption(currentActionOption);
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
-                herbs++;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Resource: Herbs';
                 changeActionText(currentActionText);
-                currentActionOption='—';
+                currentActionOption='Pick the herbs';
                 changeActionOption(currentActionOption);
-                invHerbs.innerHTML=`herbs: ${herbs}`;
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
-                fluff++;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Resource: Fluff';
                 changeActionText(currentActionText);
-                currentActionOption='—';
+                currentActionOption='Pick the fluff';
                 changeActionOption(currentActionOption);
-                invFluff.innerHTML=`fluff: ${fluff}`
+                //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
-                bark++;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Resource: Tree';
                 changeActionText(currentActionText);
-                currentActionOption='—';
+                currentActionOption='Chop the tree';
                 changeActionOption(currentActionOption);
-                invBark.innerHTML=`bark: ${bark}`;
+                //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
-                ore++;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Resource: Ores';
                 changeActionText(currentActionText);
-                currentActionOption='—';
+                currentActionOption='Mine the ore';
                 changeActionOption(currentActionOption);
-                invOre.innerHTML=`ore: ${ore}`;
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
-                frame++;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
-                changeActionText(currentActionText);
-                currentActionOption='—';
-                changeActionOption(currentActionOption);
-                invFrames.innerHTML=`weapon frames: ${frame}`;
+                //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
-                Math.floor(Math.random()*4)===0?frame++:"";
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Enemy: Rat';
                 changeActionText(currentActionText);
-                currentActionOption='—';
+                currentActionOption='Fight the Rat';
                 changeActionOption(currentActionOption);
-                invFrames.innerHTML=`weapon frames: ${frame}`;
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('dragon')) {
-                orb=true;
-                frame+=1;
-                document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
+                //handle the option being clicked
+            } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+                //and show the appropriate actions
+                show('awayAction');
+                currentActionText='Enemy: Scorpion'
                 changeActionText(currentActionText);
-                currentActionOption='—';
+                currentActionOption='Fight the Scorpion';
                 changeActionOption(currentActionOption);
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')) {
-                bowstring=true;
-                frame+=1;
-                document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
-                changeActionText(currentActionText);
-                currentActionOption='—';
-                changeActionOption(currentActionOption);
-            } else if (document.querySelector(playerLocationClassTile()).classList.contains('bear')) {
-                spike=true;
-                frame+=1;
-                document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
-                emptyTiles.push(playerLocationClassTile());
-                currentActionText='Empty';
-                changeActionText(currentActionText);
-                currentActionOption='—';
-                changeActionOption(currentActionOption);
-            }
+                //handle the option being clicked
+            } 
+
+            lastTickTile=playerLocationClassTile();
         }
-    });
 
-    document.querySelectorAll('.empty').forEach(empty => {
-        empty.style.backgroundImage='url(./images/blankVisited.png)';
-    })
+        if (document.querySelector(playerLocationClassTile()).classList.contains('home')) {
+            currentActionText='Home';
+            changeActionText(currentActionText);
+            //check if have fish to cook, or armor or weapons to make, and give options accordingly
+            //otherwise make it blank
+            let canMakePerfected = false;
+            if(fish>0){
+                //hide the away actions
+                hide('awayAction');
+                document.querySelector('.fishAction').innerHTML=`Cook your Fish (${fish} ticks)`;
+                //show the correct 'crafting' link
+                show('fishAction');
+                document.querySelector('.fishAction').addEventListener('click',e=>{
+                    cookFish();
+                });
+            }
+            if(frame!=0){
+                hide('awayAction');
+                //check if player already has a weapon, if not show the link
+                !bow?show('bowLink'):'';
+                $('.bowLink').unbind().click(()=>{
+                    makeBasicWeapon('bow');
+                });
+                !staff?show('staffLink'):'';
+                $('.staffLink').unbind().click(()=>{
+                    makeBasicWeapon('staff');
+                });
+                !halberd?show('halberdLink'):'';
+                $('.halberdLink').unbind().click(()=>{
+                    makeBasicWeapon('halberd');
+                });
+                //if player has a frame but has all 3 weapons, don't show any link and show awayAction
+                bow&&staff&&halberd?show('awayAction'):'';
+            }
+            if(bow&&bowstring){
+                canMakePerfected=true;
+                hide('awayAction');
+                show('perfectBowLink');
+                $('.perfectBowLink').unbind().click(()=>{
+                    makePerfectWeapon('bow');
+                });
+            }
+            if(staff&&orb){
+                canMakePerfected=true;
+                hide('awayAction');
+                show('perfectStaffLink');
+                $('.perfectStaffLink').unbind().click(()=>{
+                    makePerfectWeapon('staff');
+                });
+            }
+            if(halberd&&spike){
+                canMakePerfected=true;
+                hide('awayAction');
+                show('perfectHalberdLink');
+                $('.perfectHalberdLink').unbind().click(()=>{
+                    makePerfectWeapon('halberd');
+                });
+            }
+            if(herbs>0) {
+                hide('awayAction');
+                document.querySelector('.potionAction').innerHTML=`Make Potions (${herbs*2} ticks)`
+                show('potionAction')
+                document.querySelector('.potionAction').addEventListener('click',e=>{
+                    makePotions();
+                    ticksUsed+=1;
+                });
+            } 
+            if(fish===0&&frame===0&&herbs===0&&!canMakePerfected) {
+                show('awayAction');
+                currentActionOption='—';
+                changeActionOption(currentActionOption);
+                ticksUsed+=1;
+            }
+        } else {
+            hide('bowLink');
+            hide('staffLink');
+            hide('halberdLink');
+            hide('perfectBowLink');
+            hide('perfectStaffLink');
+            hide('perfectHalberdLink');
+            hide('homeAction');
+        }
 
-    //inventory item visibility management
-    //#region 
-    fish===0?hide('fishInv'):show('fishInv');
-    cookedFish===0?hide('cookedFishInv'):show('cookedFishInv');
-    herbs===0?hide('herbInv'):show('herbInv');
-    potions===0?hide('potionsInv'):show('potionsInv');
-    bark===0?hide('barkInv'):show('barkInv');
-    ore===0?hide('oreInv'):show('oreInv');
-    fluff===0?hide('fluffInv'):show('fluffInv');
-    frame===0?hide('framesInv'):show('framesInv');
-    !bow?hide('bowInv'):show('bowInv');
-    !bowstring?hide('bowstringInv'):show('bowstringInv');
-    !bow2?hide('bow2Inv'):show('bow2Inv');
-    !staff?hide('staffInv'):show('staffInv');
-    !orb?hide('orbsInv'):show('orbsInv');
-    !staff2?hide('staff2Inv'):show('staff2Inv');
-    !halberd?hide('halberdInv'):show('halberdInv');
-    !spike?hide('spikesInv'):show('spikesInv');
-    !halberd2?hide('halberd2Inv'):show('halberd2Inv');
-    //#endregion
+        actionOption.addEventListener('click',e=>{
+            if(!emptyTiles.includes(playerLocationClassTile())&&!document.querySelector(playerLocationClassTile()).classList.contains('home')){
+                document.querySelector(playerLocationClassTile()).classList.add('empty');
+                if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
+                    fish+=4;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invFish.innerHTML=`raw fish: ${fish}`;
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
+                    herbs++;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invHerbs.innerHTML=`herbs: ${herbs}`;
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
+                    fluff++;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invFluff.innerHTML=`fluff: ${fluff}`
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
+                    bark++;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invBark.innerHTML=`bark: ${bark}`;
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
+                    ore++;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invOre.innerHTML=`ore: ${ore}`;
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
+                    frame++;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invFrames.innerHTML=`weapon frames: ${frame}`;
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+                    Math.floor(Math.random()*4)===0?frame++:"";
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                    invFrames.innerHTML=`weapon frames: ${frame}`;
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('dragon')) {
+                    orb=true;
+                    frame+=1;
+                    document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')) {
+                    bowstring=true;
+                    frame+=1;
+                    document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                } else if (document.querySelector(playerLocationClassTile()).classList.contains('bear')) {
+                    spike=true;
+                    frame+=1;
+                    document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
+                    emptyTiles.push(playerLocationClassTile());
+                    currentActionText='Empty';
+                    changeActionText(currentActionText);
+                    currentActionOption='—';
+                    changeActionOption(currentActionOption);
+                }
+            }
+        });
 
-},600)
+        document.querySelectorAll('.empty').forEach(empty => {
+            empty.style.backgroundImage='url(./images/blankVisited.png)';
+        })
+
+        //inventory item visibility management
+        //#region 
+        fish===0?hide('fishInv'):show('fishInv');
+        cookedFish===0?hide('cookedFishInv'):show('cookedFishInv');
+        herbs===0?hide('herbInv'):show('herbInv');
+        potions===0?hide('potionsInv'):show('potionsInv');
+        bark===0?hide('barkInv'):show('barkInv');
+        ore===0?hide('oreInv'):show('oreInv');
+        fluff===0?hide('fluffInv'):show('fluffInv');
+        frame===0?hide('framesInv'):show('framesInv');
+        !bow?hide('bowInv'):show('bowInv');
+        !bowstring?hide('bowstringInv'):show('bowstringInv');
+        !bow2?hide('bow2Inv'):show('bow2Inv');
+        !staff?hide('staffInv'):show('staffInv');
+        !orb?hide('orbsInv'):show('orbsInv');
+        !staff2?hide('staff2Inv'):show('staff2Inv');
+        !halberd?hide('halberdInv'):show('halberdInv');
+        !spike?hide('spikesInv'):show('spikesInv');
+        !halberd2?hide('halberd2Inv'):show('halberd2Inv');
+        //#endregion
+    }
+},600);
 
 //#endregion
