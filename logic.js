@@ -7,8 +7,7 @@ let lastClickedTick=0;
 //check for user interacting with the page
 document.addEventListener('mousedown',e=>{
     //add last tick user interacted with the page to a variable
-    lastClickedTick=currentTick;
-    console.log('page clicked',currentTick);
+    lastClickedTick=0;
 });
 ////#endregion
 
@@ -196,6 +195,8 @@ let staff2 = false;
 let halberd = false;
 let spike = false;
 let halberd2 = false;
+let armor = false;
+let perfectArmor = false;
 
 //inventory/crafting functions
 let cookFish = () => {
@@ -258,6 +259,23 @@ let makePerfectWeapon = weapon => {
     canMakePerfected=false;
 }
 
+let makeBasicArmor = () => {
+    ticks+=3;
+    fluff-=1;
+    bark-=1;
+    ore-=1;
+    armor = true;
+}
+
+let makePerfectArmor = () => {
+    ticks+=3;
+    fluff-=2;
+    bark-=2;
+    ore-=2;
+    armor = false;
+    perfectArmor = true;
+}
+
 //TICK LOOP
 //#region
 
@@ -265,8 +283,9 @@ let lastTickTile = '.grid33';
 
 let ticks = setInterval(()=>{
     currentTick+=1;
+    lastClickedTick+=1;
     //check how recently the user interacted with the page so the loop doesn't run forever
-    if((lastClickedTick+150)<=currentTick||lastClickedTick!==0) {
+    if(lastClickedTick<=150) {
         //run move function every tick, the function checks if it needs to run or not
         walkHere(requestedLocation[0],requestedLocation[1]);
         //find out if you still need to move (if requestedLocation is different to playerLocation)
