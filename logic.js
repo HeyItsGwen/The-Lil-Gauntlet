@@ -1,3 +1,13 @@
+//TODO
+/*
+
+basic/perfected armor
+swap to boss fight
+boss fight
+invy icons
+
+*/
+
 //THINGS TO STOP THE LOOP FROM RUNNING IN THE BACKGROUND!!!!
 //#region
 //get current game tick
@@ -15,6 +25,8 @@ document.addEventListener('mousedown',e=>{
 //#region
 let actionText = document.getElementById('actionP');
 let actionOption = document.getElementById('actionOption');
+//tick counter
+let tickCounterP = document.getElementById('tickCounterP');
 //inventory elements
 let invFish = document.getElementById('invFish');
 let invCookedFish = document.getElementById('invCookedFish');
@@ -201,6 +213,7 @@ let perfectArmor = false;
 //inventory/crafting functions
 let cookFish = () => {
     ticksUsed += fish;
+    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
     cookedFish += fish;
     fish = 0;
     invCookedFish.innerHTML=`cooked fish: ${cookedFish}`;
@@ -209,6 +222,7 @@ let cookFish = () => {
 
 let makePotions = () => {
     ticksUsed += herbs*2;
+    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
     potions += herbs;
     herbs = 0;
     invPotions.innerHTML=`potions: ${potions}`;
@@ -216,7 +230,8 @@ let makePotions = () => {
 }
 
 let makeBasicWeapon = weapon => {
-    ticks+=3;
+    ticksUsed+=3;
+    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
     //function takes a text string as an arg to determine what weapon to make
     if(weapon==='bow'){
         bow=true;
@@ -239,7 +254,8 @@ let makeBasicWeapon = weapon => {
 }
 
 let makePerfectWeapon = weapon => {
-    ticks +=3;
+    ticksUsed +=3;
+    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
     if(weapon==='bow'){
         bowstring=false;
         bow=false;
@@ -260,7 +276,8 @@ let makePerfectWeapon = weapon => {
 }
 
 let makeBasicArmor = () => {
-    ticks+=3;
+    ticksUsed+=3;
+    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
     fluff-=1;
     bark-=1;
     ore-=1;
@@ -268,7 +285,8 @@ let makeBasicArmor = () => {
 }
 
 let makePerfectArmor = () => {
-    ticks+=3;
+    ticksUsed+=3;
+    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
     fluff-=2;
     bark-=2;
     ore-=2;
@@ -372,6 +390,7 @@ let ticks = setInterval(()=>{
         if (playerLocationClassTile()!=lastTickTile){
             //add a tick for moving
             ticksUsed+=1;
+            tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
             if (document.querySelector(playerLocationClassTile()).classList.contains('empty')){
                 //and show the appropriate actions
                 show('awayAction');
@@ -385,7 +404,7 @@ let ticks = setInterval(()=>{
                 currentActionText='Resource: Fish';
                 //change action text
                 changeActionText(currentActionText);
-                currentActionOption='Fish the Fish';
+                currentActionOption='Fish the Fish (4 ticks)';
                 changeActionOption(currentActionOption);
                 //handle the option being clicked
             } else if(document.querySelector(playerLocationClassTile()).classList.contains('demiboss')){
@@ -393,21 +412,21 @@ let ticks = setInterval(()=>{
                 show('awayAction');
                 currentActionText=`Demiboss: ${currentTileClasslist[currentTileClasslist.length-2]}!`;
                 changeActionText(currentActionText);
-                currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}!`;
+                currentActionOption=`Fight the ${currentTileClasslist[currentTileClasslist.length-2]}! (6 ticks)`;
                 changeActionOption(currentActionOption);
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
                 //and show the appropriate actions
                 show('awayAction');
                 currentActionText='Resource: Herbs';
                 changeActionText(currentActionText);
-                currentActionOption='Pick the herbs';
+                currentActionOption='Pick the herbs (2 ticks)';
                 changeActionOption(currentActionOption);
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
                 //and show the appropriate actions
                 show('awayAction');
                 currentActionText='Resource: Fluff';
                 changeActionText(currentActionText);
-                currentActionOption='Pick the fluff';
+                currentActionOption='Pick the fluff (2 ticks)';
                 changeActionOption(currentActionOption);
                 //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
@@ -415,7 +434,7 @@ let ticks = setInterval(()=>{
                 show('awayAction');
                 currentActionText='Resource: Tree';
                 changeActionText(currentActionText);
-                currentActionOption='Chop the tree';
+                currentActionOption='Chop the tree (2 ticks)';
                 changeActionOption(currentActionOption);
                 //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
@@ -423,7 +442,7 @@ let ticks = setInterval(()=>{
                 show('awayAction');
                 currentActionText='Resource: Ores';
                 changeActionText(currentActionText);
-                currentActionOption='Mine the ore';
+                currentActionOption='Mine the ore (2 ticks)';
                 changeActionOption(currentActionOption);
                 //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
@@ -431,7 +450,7 @@ let ticks = setInterval(()=>{
                 show('awayAction');
                 currentActionText='Enemy: Rat';
                 changeActionText(currentActionText);
-                currentActionOption='Fight the Rat';
+                currentActionOption='Fight the Rat (2 ticks)';
                 changeActionOption(currentActionOption);
                 //handle the option being clicked
             } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
@@ -439,7 +458,7 @@ let ticks = setInterval(()=>{
                 show('awayAction');
                 currentActionText='Enemy: Scorpion'
                 changeActionText(currentActionText);
-                currentActionOption='Fight the Scorpion';
+                currentActionOption='Fight the Scorpion (2 ticks)';
                 changeActionOption(currentActionOption);
                 //handle the option being clicked
             } 
@@ -512,13 +531,13 @@ let ticks = setInterval(()=>{
                 document.querySelector('.potionAction').addEventListener('click',e=>{
                     makePotions();
                     ticksUsed+=1;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                 });
             } 
             if(fish===0&&frame===0&&herbs===0&&!canMakePerfected) {
                 show('awayAction');
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
-                ticksUsed+=1;
             }
         } else {
             hide('bowLink');
@@ -535,6 +554,8 @@ let ticks = setInterval(()=>{
                 document.querySelector(playerLocationClassTile()).classList.add('empty');
                 if(document.querySelector(playerLocationClassTile()).classList.contains('fish')){
                     fish+=4;
+                    ticksUsed+=4;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -543,6 +564,8 @@ let ticks = setInterval(()=>{
                     invFish.innerHTML=`raw fish: ${fish}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
                     herbs++;
+                    ticksUsed+=2;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -551,6 +574,8 @@ let ticks = setInterval(()=>{
                     invHerbs.innerHTML=`herbs: ${herbs}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
                     fluff++;
+                    ticksUsed+=2;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -559,6 +584,8 @@ let ticks = setInterval(()=>{
                     invFluff.innerHTML=`fluff: ${fluff}`
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
                     bark++;
+                    ticksUsed+=2;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -567,6 +594,8 @@ let ticks = setInterval(()=>{
                     invBark.innerHTML=`bark: ${bark}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
                     ore++;
+                    ticksUsed+=2;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -575,6 +604,8 @@ let ticks = setInterval(()=>{
                     invOre.innerHTML=`ore: ${ore}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
                     frame++;
+                    ticksUsed+=2;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -582,6 +613,8 @@ let ticks = setInterval(()=>{
                     changeActionOption(currentActionOption);
                     invFrames.innerHTML=`weapon frames: ${frame}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
+                    ticksUsed+=2;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     Math.floor(Math.random()*4)===0?frame++:"";
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
@@ -592,6 +625,8 @@ let ticks = setInterval(()=>{
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('dragon')) {
                     orb=true;
                     frame+=1;
+                    ticksUsed+=6;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
@@ -601,6 +636,8 @@ let ticks = setInterval(()=>{
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('darkbeast')) {
                     bowstring=true;
                     frame+=1;
+                    ticksUsed+=6;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
@@ -610,6 +647,8 @@ let ticks = setInterval(()=>{
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('bear')) {
                     spike=true;
                     frame+=1;
+                    ticksUsed+=6;
+                    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                     document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';

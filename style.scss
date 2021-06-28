@@ -11,9 +11,24 @@ header {
 main {
   margin-top: 15px;
 
+  #tickCounterBox {
+    width: 35%;
+    min-width: 300px;
+    max-width: 400px;
+    
+    p {
+      margin-bottom: 2px;
+    }
+  }
+
+  #actionBar {
+    margin-top: 0;
+  }
+
   #actionBar, #inventory {
     width: 35%;
-    max-width: 530px;
+    min-width: 300px;
+    max-width: 400px;
     border: 1px solid black;
     padding: 3px 10px 3px 10px;
 
