@@ -2,13 +2,20 @@
 /*
 
 basic/perfected armor
-swap to boss fight
-boss fight
 invy icons
+instruction popup
+
+boss fight simulation for v1
+
+actual boss fight if i come back for v2
+    swap to boss fight grid
+    hunllef ai
+    prayer swapping
+    weapon swapping
 
 */
 
-//THINGS TO STOP THE LOOP FROM RUNNING IN THE BACKGROUND!!!!
+//THINGS TO STOP THE LOOP FROM DESTORYING PEOPLES PC MEMORY!!!!
 //#region
 //get current game tick
 let currentTick=0;
@@ -276,22 +283,28 @@ let makePerfectWeapon = weapon => {
 }
 
 let makeBasicArmor = () => {
-    ticksUsed+=3;
-    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
-    fluff-=1;
-    bark-=1;
-    ore-=1;
-    armor = true;
+    if(!armor&&!perfectArmor){
+        ticksUsed+=3;
+        tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
+        fluff=fluff-1;
+        bark=bark-1;
+        ore=ore-1;
+        armor = true;
+        hide('armorLink');
+    }
 }
 
 let makePerfectArmor = () => {
-    ticksUsed+=3;
-    tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
-    fluff-=2;
-    bark-=2;
-    ore-=2;
-    armor = false;
-    perfectArmor = true;
+    if(!perfectArmor){
+        ticksUsed+=3;
+        tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
+        fluff=fluff-2;
+        bark=bark-2;
+        ore=ore-2;
+        armor = false;
+        perfectArmor = true;
+        hide('perfectArmorLink');
+    }
 }
 
 //TICK LOOP
@@ -530,11 +543,26 @@ let ticks = setInterval(()=>{
                 show('potionAction')
                 document.querySelector('.potionAction').addEventListener('click',e=>{
                     makePotions();
-                    ticksUsed+=1;
                     tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
                 });
-            } 
-            if(fish===0&&frame===0&&herbs===0&&!canMakePerfected) {
+            }
+            if(ore>0&&fluff>0&&bark>0){
+                if(!armor) {
+                    hide('awayAction');
+                    show('armorLink');
+                    $(this).one('click',e=>{
+                        makeBasicArmor();
+                    })
+                }
+            }
+            if(armor&&ore>=1&&fluff>=2&&bark>=2){
+                hide('awayAction');
+                show('perfectArmorLink');
+                document.querySelector('.perfectArmorLink').addEventListener('click',e=>{
+                    makePerfectArmor();
+                })
+            }
+            if(fish===0&&frame===0&&herbs===0&&!canMakePerfected&&!canMakeArmor) {
                 show('awayAction');
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
@@ -546,6 +574,8 @@ let ticks = setInterval(()=>{
             hide('perfectBowLink');
             hide('perfectStaffLink');
             hide('perfectHalberdLink');
+            hide('armorLink');
+            hide('perfectArmorLink');
             hide('homeAction');
         }
 
@@ -682,6 +712,9 @@ let ticks = setInterval(()=>{
         !halberd?hide('halberdInv'):show('halberdInv');
         !spike?hide('spikesInv'):show('spikesInv');
         !halberd2?hide('halberd2Inv'):show('halberd2Inv');
+        !armor?hide('armorInv'):show('armorInv');
+        !perfectArmor?hide('perfectArmorInv'):show('perfectArmorInv');
+
         //#endregion
     } else {
         console.log('paused');
