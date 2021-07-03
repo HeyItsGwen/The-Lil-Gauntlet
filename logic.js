@@ -1,11 +1,10 @@
 //TODO
 /*
 
-basic/perfected armor
+boss fight simulation for v1
+
 invy icons
 instruction popup
-
-boss fight simulation for v1
 
 actual boss fight if i come back for v2
     swap to boss fight grid
@@ -142,7 +141,7 @@ document.querySelectorAll('.gameGrid').forEach(grid=>{
     grid.addEventListener('mouseover', e => {
         grid.classList[grid.classList.length-1]!='grid33'?changeActionText('Walk here'):'';
         grid.classList[grid.classList.length-1]=='grid33'?changeActionText('Walk home'):'';
-        grid.classList[grid.classList.length-1]=='bossRoom'?changeActionText('Fight the hunllef?'):'';
+        grid.classList[grid.classList.length-1]=='bossRoom'?changeActionText(`Fight the hunllef? (${bossKillChance()}% chance of success)`):'';
     });
     grid.addEventListener('mouseout', e => {changeActionText(currentActionText)});
 });
@@ -216,6 +215,12 @@ let spike = false;
 let halberd2 = false;
 let armor = false;
 let perfectArmor = false;
+
+let bossKillChance = () => {
+    killChance = 0;
+    
+    return killChance;
+}
 
 //inventory/crafting functions
 let cookFish = () => {
@@ -562,7 +567,7 @@ let ticks = setInterval(()=>{
                     makePerfectArmor();
                 })
             }
-            if(fish===0&&frame===0&&herbs===0&&!canMakePerfected&&!canMakeArmor) {
+            if(fish===0&&frame===0&&herbs===0&&!canMakePerfected) {
                 show('awayAction');
                 currentActionOption='—';
                 changeActionOption(currentActionOption);
