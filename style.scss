@@ -98,6 +98,28 @@ main {
       top: 6px;
     }
   }
+  div {
+    p {
+      border-right: 1px solid black;
+      padding: 0 5px;
+    }
+  }
+}
+
+.modalButton {
+  margin: 25px 10px 0 10px;
+}
+
+.modal-title {
+  color: black !important;
+}
+
+.modal-body {
+  color: black !important;
+  .instructionImg {
+    width: 30px;
+    height: auto;
+  }
 }
 
 footer {

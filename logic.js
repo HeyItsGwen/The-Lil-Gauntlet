@@ -51,7 +51,18 @@ let invStaff = document.getElementById('invStaff');
 let invBow2 = document.getElementById('invBow2');
 let invHalberd2 = document.getElementById('invHalberd2');
 let invStaff2 = document.getElementById('invStaff2');
+
+let bossTile = document.getElementById('boss');
+
+let resetButton = document.getElementById('resetButton');
 //#endregion
+
+resetButton.addEventListener('click', e=>{
+    let resetConfirm = confirm('Really reset the board?');
+    if(resetConfirm){
+        location.reload();
+    }
+});
 
 //grid random generation
 //24 tiles total
@@ -218,9 +229,72 @@ let perfectArmor = false;
 
 let bossKillChance = () => {
     killChance = 0;
-    
+    let numOfWeapons=0;
+    let numOfPerfectWeapons=0;
+    if(bow){
+        numOfWeapons+=1;
+    } if (staff){
+        numOfWeapons+=1;
+    } if (halberd){
+        numOfWeapons+=1;
+    }
+
+    if(bow2){
+        numOfPerfectWeapons+=1;
+    } if (staff2){
+        numOfPerfectWeapons+=1;
+    } if (halberd2){
+        numOfPerfectWeapons+=1;
+    }
+
+    if(numOfWeapons == 1 && numOfPerfectWeapons == 0){
+        killChance += 5
+    }
+    if (numOfWeapons == 2 && numOfPerfectWeapons == 0){
+        killChance += 10;
+    }
+    if (numOfPerfectWeapons == 1 && numOfWeapons>0){
+        killChance += 20;
+    }
+    if (numOfPerfectWeapons >=2){
+        killChance += 30;
+    }
+    if (armor){
+        killChance += 10;
+    }
+    if (perfectArmor){
+        killChance += 20;
+    }
+    if(numOfWeapons > 2&&numOfPerfectWeapons==0){
+        killChance += 10;
+    }
+    if(numOfPerfectWeapons > 2){
+        killChance += 20;
+    }
+
+    killChance += cookedFish * 2;
+    killChance += potions * 4;
+    killChance>95?killChance=95:'';
     return killChance;
 }
+
+bossTile.addEventListener('click', e=>{
+    let conf = confirm(`Really fight the hunllef?\nYou have a ${bossKillChance()}% chance of winning!`);
+    if(conf) {
+        let rand = Math.random()*100;
+        if(rand>bossKillChance()) {
+            let confLose = confirm('Oh dear, you are dead!\nReset?');
+            if(confLose){
+                location.reload();
+            }
+        } else {
+            let confWin = confirm(`You beat the hunllef in ${ticksUsed} ticks!!!\nReset?`);
+            if(confWin){
+                location.reload();
+            }
+        }
+    }
+});
 
 //inventory/crafting functions
 let cookFish = () => {
@@ -596,7 +670,7 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invFish.innerHTML=`raw fish: ${fish}`;
+                    invFish.innerHTML=`Raw fish: ${fish}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('herbs')) {
                     herbs++;
                     ticksUsed+=2;
@@ -606,7 +680,7 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invHerbs.innerHTML=`herbs: ${herbs}`;
+                    invHerbs.innerHTML=`Herbs: ${herbs}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('fluff')) {
                     fluff++;
                     ticksUsed+=2;
@@ -616,7 +690,7 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invFluff.innerHTML=`fluff: ${fluff}`
+                    invFluff.innerHTML=`Fluff: ${fluff}`
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('tree')) {
                     bark++;
                     ticksUsed+=2;
@@ -626,7 +700,7 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invBark.innerHTML=`bark: ${bark}`;
+                    invBark.innerHTML=`Bark: ${bark}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('rock')) {
                     ore++;
                     ticksUsed+=2;
@@ -636,7 +710,7 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invOre.innerHTML=`ore: ${ore}`;
+                    invOre.innerHTML=`Ore: ${ore}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('scorpions')) {
                     frame++;
                     ticksUsed+=2;
@@ -646,7 +720,7 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invFrames.innerHTML=`weapon frames: ${frame}`;
+                    invFrames.innerHTML=`Frames: ${frame}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('rats')) {
                     ticksUsed+=2;
                     tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
@@ -656,13 +730,13 @@ let ticks = setInterval(()=>{
                     changeActionText(currentActionText);
                     currentActionOption='—';
                     changeActionOption(currentActionOption);
-                    invFrames.innerHTML=`weapon frames: ${frame}`;
+                    invFrames.innerHTML=`Frames: ${frame}`;
                 } else if (document.querySelector(playerLocationClassTile()).classList.contains('dragon')) {
                     orb=true;
                     frame+=1;
                     ticksUsed+=6;
                     tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
-                    document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
+                    document.querySelector('#invFrames').innerHTML=`Frames: ${frame}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -673,7 +747,7 @@ let ticks = setInterval(()=>{
                     frame+=1;
                     ticksUsed+=6;
                     tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
-                    document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
+                    document.querySelector('#invFrames').innerHTML=`Frames: ${frame}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);
@@ -684,7 +758,7 @@ let ticks = setInterval(()=>{
                     frame+=1;
                     ticksUsed+=6;
                     tickCounterP.innerHTML=`ticks used: ${ticksUsed}`;
-                    document.querySelector('#invFrames').innerHTML=`weapons frames: ${frame}`;
+                    document.querySelector('#invFrames').innerHTML=`Frames: ${frame}`;
                     emptyTiles.push(playerLocationClassTile());
                     currentActionText='Empty';
                     changeActionText(currentActionText);

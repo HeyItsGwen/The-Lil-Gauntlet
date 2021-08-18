@@ -108,27 +108,67 @@
     <!-- inventory -->
     <div id='inventory' class='d-flex flex-column align-items-end'>
       <p>Inventory</p>
-      <div id='inventoryBox' class='d-flex'>
-        <p id='invFish' class='d-none fishInv'>raw fish: 0</p>
-        <p id='invCookedFish' class='d-none cookedFishInv'>cooked fish: 0</p>
-        <p id='invHerbs' class='d-none herbInv'>herbs: 0</p>
-        <p id='invPotions' class='d-none potionsInv'>potions: 0</p>
-        <p id='invBark' class='d-none barkInv'>bark: 0</p>
-        <p id='invOre' class='d-none oreInv'>ore: 0</p>
-        <p id='invFluff' class='d-none fluffInv'>fluff: 0</p>
-        <p id='invFrames' class='d-none framesInv'>weapon frames: 0</p>
-        <p id='invOrbs' class='d-none orbsInv'>orb: <i class="fas fa-check-circle"></i></p>
-        <p id='invBowstring' class='d-none bowstringInv'>bowstring: <i class="fas fa-check-circle"></i></p>
-        <p id='invSpikes' class='d-none spikesInv'>spikes: <i class="fas fa-check-circle"></i></p>
-        <p id='invBow' class='d-none bowInv'>Basic Bow: <i class="fas fa-check-circle"></i></p>
-        <p id='invHalberd' class='d-none halberdInv'>Basic Halberd: <i class="fas fa-check-circle"></i></p>
-        <p id='invStaff' class='d-none staffInv'>Basic Staff: <i class="fas fa-check-circle"></i></p>
-        <p id='invBow2' class='d-none bow2Inv'>Perfected Bow: <i class="fas fa-check-circle"></i></p>
-        <p id='invHalberd2' class='d-none halberd2Inv'>Perfected Halberd: <i class="fas fa-check-circle"></i></p>
-        <p id='invStaff2' class='d-none staff2Inv'>Perfected Staff: <i class="fas fa-check-circle"></i></p>
-        <p id='invStaff2' class='d-none armorInv'>Basic Armor:  <i class="fas fa-check-circle"></i></p>
-        <p id='invStaff2' class='d-none perfectArmorInv'>Perfected Armor: <i class="fas fa-check-circle"></i></p>
+      <div id='inventoryBox' class='d-flex flex-column'>
+        <div class='d-flex'>
+          <p id='invFish' class='d-none fishInv'>Raw Fish: 0</p>
+          <p id='invCookedFish' class='d-none cookedFishInv'>Cooked Fish: 0</p>
+          <p id='invHerbs' class='d-none herbInv'>Herbs: 0</p>
+          <p id='invPotions' class='d-none potionsInv'>Potions: 0</p>
+          <p id='invBark' class='d-none barkInv'>Bark: 0</p>
+          <p id='invOre' class='d-none oreInv'>Ore: 0</p>
+          <p id='invFluff' class='d-none fluffInv'>Fluff: 0</p>
+        </div>
+        <div class='d-flex'>
+          <p id='invFrames' class='d-none framesInv'>Frames: 0</p>
+          <p id='invBow' class='d-none bowInv'>Basic Bow: <i class="fas fa-check-circle"></i></p>
+          <p id='invHalberd' class='d-none halberdInv'>Basic Halberd: <i class="fas fa-check-circle"></i></p>
+          <p id='invStaff' class='d-none staffInv'>Basic Staff: <i class="fas fa-check-circle"></i></p>
+          <p id='invStaff2' class='d-none armorInv'>Basic Armor:  <i class="fas fa-check-circle"></i></p>
+          <p id='invStaff2' class='d-none perfectArmorInv'>Perfect Armor: <i class="fas fa-check-circle"></i></p>
+        </div>
+        <div class='d-flex'>
+          <p id='invOrbs' class='d-none orbsInv'>Orb: <i class="fas fa-check-circle"></i></p>
+          <p id='invStaff2' class='d-none staff2Inv'>Perfect Staff: <i class="fas fa-check-circle"></i></p>
+          <p id='invBowstring' class='d-none bowstringInv'>Bowstring: <i class="fas fa-check-circle"></i></p>
+          <p id='invBow2' class='d-none bow2Inv'>Perfect Bow: <i class="fas fa-check-circle"></i></p>
+          <p id='invSpikes' class='d-none spikesInv'>Spike: <i class="fas fa-check-circle"></i></p>
+          <p id='invHalberd2' class='d-none halberd2Inv'>Perfect Halberd: <i class="fas fa-check-circle"></i></p>
+        </div>
       </div>
+    </div>
+
+    <div class='d-flex'>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-dark modalButton" data-toggle="modal" data-target="#exampleModal">Instructions</button>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Instructions</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Your goal is to kill the Corrupted Hunllef (<span><img src='./images/bossTile.png' class='instructionImg'/></span>) as fast as possible.<br/>
+              You do this by creating weapons (a bow, a staff, or a halberd) and upgrading them to their perfected versions with a bowstring, an orb, or a spike, respectively.<br/>
+              The bowstring is obtained from the darkbeast (<span><img src='./images/darkbeastVisited.png' class='instructionImg'/></span>), the orb from the dragon (<span><img src='./images/dragonVisited.png' class='instructionImg'/></span>), and the spike from the bear (<span><img src='./images/bearVisited.png' class='instructionImg'/></span>).<br/><br/>
+              To create a basic weapon, you need a weapon frame, which you can obtain from a rat (<span><img src='./images/ratsVisited.png' class='instructionImg'/></span> 50% chance), a scorpion (<span><img src='./images/scorpionsVisited.png' class='instructionImg'/></span> 100% chance), or by killing any of the demibosses (<span><img src='./images/darkbeastVisited.png' class='instructionImg'/></span><span><img src='./images/dragonVisited.png' class='instructionImg'/></span><span><img src='./images/bearVisited.png' class='instructionImg'/></span>).<br/>
+              You then return to the home tile (<span><img src='./images/HomeTile.png' class='instructionImg'/></span>) and create/upgrade the weapon. <br/><br/>
+              From the home tile, you may also create potions (from herbs <span><img src='./images/herbVisited.png' class='instructionImg'/></span>), cook fish (<span><img src='./images/fishVisited.png' class='instructionImg'/></span>), and create armor.<br/><br/>
+              Basic armor is created with 1 ore (<span><img src='./images/rocksVisited.png' class='instructionImg'/></span>), 1 fluff (<span><img src='./images/fluffVisited.png' class='instructionImg'/></span>), and one bark (<span><img src='./images/treeVisited.png' class='instructionImg'/></span>), and can then be upgraded with the same.<br/><br/>
+              All of this comes together to give you more of a chance at defeating the hunllef!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary modalButton" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- reset button -->
+      <button id='resetButton' type="button" class="btn btn-dark modalButton">Reset Board</button>
+
     </div>
   </main>
 
